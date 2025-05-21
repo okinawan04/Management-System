@@ -35,7 +35,13 @@
 
 ---
 
-### 1. リポジトリをクローン
+### 1. vscodeのおすすめ拡張機能
+
+- Git Graph (Githubのブランチを可視化してくれる)
+- Git Coplilot (vscode上で使えるコード生成AI、インストールと同時にGit Copilot Chatも入る)
+- Live Server (右クリック→Open with Live Serverでコードの動きを確認できる)
+
+### 2. リポジトリをクローン
 
 ```bash
 git clone https://github.com/your-team/bookstore-system.git
