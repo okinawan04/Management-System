@@ -1,0 +1,163 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #a0d8ef;
+}
+
+/* ヘッダー */
+header {
+    background-color: #a0d8ef;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #aaa;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #000;
+}
+
+.subtitle {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000000;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.header-btn {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #aaa;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 注文書フォーム */
+
+.order-form {
+    background-color: #ffffff;
+    margin: 2rem auto; /* 上下余白 + 左右中央寄せ */
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 794px;  
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+}
+
+.order-date {
+    font-size: 1rem;
+    padding: 0.3rem;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+
+    display: block;
+    margin: 0 auto;
+}
+
+.recipient {
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+.recipient-name {
+    font-size: 1rem;
+    padding: 0.3rem;
+    width: 200px;
+    margin-right: 0.5rem;
+}
+
+.note {
+    font-size: 0.9rem;
+    color: #333;
+    margin-top: 0.3rem;
+    margin-bottom: 1rem;
+}
+
+/* 注文テーブル */
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    margin: 20px 0;
+}
+
+.order-table th, .order-table td {
+    border: 1px solid #000;
+    padding: 8px;
+    vertical-align: top;
+}
+
+.order-table th:nth-child(1),  /* 番号 */
+.order-table td:nth-child(1) {
+    width: 40px;
+}
+
+.order-table th:nth-child(2),  /* 品名 */
+.order-table td:nth-child(2) {
+    width: 280px;
+}
+
+.order-table th:nth-child(3),  /* 数量 */
+.order-table td:nth-child(3) {
+    width: 100px;
+}
+
+.order-table th:nth-child(4),  /* 単価 */
+.order-table td:nth-child(4) {
+    width: 100px;
+}
+
+.order-table th:nth-child(5),  /* 摘要 */
+.order-table td:nth-child(5) {
+    width: 250px;
+}
+
+.order-table input[type="text"],
+.order-table input[type="number"],
+.order-table textarea {
+    width: 100%;
+    padding: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.order-table textarea {
+    resize: vertical;
+    height: 60px;
+}
+
+.row-number {
+    text-align: center;
+    font-weight: bold;
+    background-color: #f9f9f9;
+    width: 40px;
+}
+
+.bottom-label {
+    font-size: 0.85rem;
+    color: #333;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+

@@ -1,0 +1,145 @@
+/* 納品書一覧 */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffd8a8; /* 薄橙色 */
+}
+
+/* ヘッダー */
+header {
+    background-color: #ffd8a8;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #aaa;
+}
+
+/* ロゴ */
+.logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #000000;
+}
+
+/* サブタイトル 納品書一覧 */
+.subtitle {
+    font-size: 1rem; /* ロゴの半分の大きさ */
+    font-weight: bold;
+    color: #000000;
+}
+
+/* ヘッダーボタン */
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.header-btn {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #aaa;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 検索操作部 */
+
+.control-panel {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 1rem 2rem;
+}
+
+/* テキスト検索 */
+.search-box {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+}
+
+/* 検索ボタン */
+.search-btn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #aaa;
+    border-radius: px;
+    cursor: pointer;
+}
+
+/* テーブルエリア */
+.table-container {
+    background-color: #ffffff;
+    margin: 0 2rem 2rem 2rem;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* 表 */
+table {
+    width: 100%;
+    border-collapse: collapse; /* 枠線が重ならないように設定 */
+    border: 2px solid #000000; /* テーブル全体の黒枠線 */
+    table-layout: fixed;
+}
+
+/* 表の設定（大きさ、線の色、左寄せ） */
+th, td {
+    padding: 0;
+    text-align: center;
+    border: 1px solid #000000; /* 各セルの黒枠線 */
+    height: 60px; /* セル全体の高さ固定 */
+    vertical-align: middle; 
+}
+
+/* 一行目の文字設定 */
+th {
+    background-color: #f0f0f0;
+}
+
+/* 各列の幅指定 */
+.delivery-table th:nth-child(1),
+.delivery-table td:nth-child(1) {
+    width: 110px; /* No.列 */
+}
+
+.delivery-table th:nth-child(2),
+.delivery-table td:nth-child(2) {
+    width: 570px; /* 顧客名列 */
+}
+
+.delivery-table th:nth-child(3),
+.delivery-table td:nth-child(3) {
+    width: 400px; /* 担当者名列 */
+}
+
+.delivery-table th:nth-child(4),
+.delivery-table td:nth-child(4) {
+    width: 180px; /* 税合計金額列 */
+}
+
+.delivery-table th:nth-child(5),
+.delivery-table td:nth-child(5) {
+    width: 150px; /* 作成日列 */
+}
+
+.delivery-table input[type="text"],
+.delivery-table input[type="number"],
+.delivery-table textarea {
+    width: 100%;
+    height: 100%;
+    min-height: 60px;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    border: none; /* 重ね枠を防ぐ */
+}
