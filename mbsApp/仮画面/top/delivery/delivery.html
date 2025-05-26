@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>納品書一覧</title>
+    <link rel="stylesheet" href="delivery.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <div class="logo">緑橋書店</div>
+            <div class="subtitle">納品書一覧</div>
+        </div>
+        <div class="header-buttons">
+            <button class="header-btn">戻る</button>
+            <button class="header-btn">作成</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="control-panel">
+            <label>
+                並べ替え：
+                <select>
+                    <option>No.昇順</option>
+                    <option>No.降順</option>
+                    <option>顧客名順</option>
+                    <option>金額多い順</option>
+                    <option>金額少ない順</option>
+                    <option>登録日昇順</option>
+                    <option>登録日降順</option>
+                </select>
+            </label>
+            <input type="text" class="search-box" placeholder="キーワードを入力">
+            <button class="search-btn">検索</button>
+        </div>
+
+        <div class="table-container">
+            <table class="delivery-table">
+                <thead>
+                    <tr>
+                        <th class="nocol">No</th>
+                        <th>顧客名</th>
+                        <th>担当者名</th>
+                        <th>税合計金額</th>
+                        <th>作成日</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="nocol">1</td>
+                        <td>野村圭太</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="nocol">2</td>
+                        <td>渡辺亮介</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <!-- 空行 -->
+                    <tr><td class="nocol"></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td class="nocol"></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td class="nocol"></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td class="nocol"></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td class="nocol"></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td class="nocol"></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td class="nocol"></td><td></td><td></td><td></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
