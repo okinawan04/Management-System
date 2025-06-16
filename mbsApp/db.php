@@ -1,6 +1,6 @@
 <?php
      $host = 'localhost';
-     $db   = 'mbsbook';
+     $db   = 'testmbsbook'; 
      $user = 'root';
      $pass = '';
      $charset = 'utf8';

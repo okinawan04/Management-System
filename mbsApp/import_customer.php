@@ -1,0 +1,26 @@
+<?php
+
+include 'db.php';
+
+require 'vendor/autoload.php'; // PhpSpreadsheetのオートロード
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
+
+if (isset($_FILES['excelFile']) && $_FILES['excelFile']['error'] === UPLOAD_ERR_OK) {
+    $filePath = $_FILES['excelFile']['tmp_name'];
+    $spreadsheet = IOFactory::load($filePath);
+    $sheet = $spreadsheet->getActiveSheet();
+    $rows = $sheet->toArray();
+
+    // 1行目はヘッダーの場合、2行目から
+    for ($i = 1; $i < count($rows); $i++) {
+        $row = $rows[$i];
+        // 例: [顧客ID, 顧客名, 合計購入金額, 平均リードタイム]
+        $stmt = $pdo->prepare('REPLACE INTO customer (customer_ID, storeName, name, chargeName,address,phoneNo,description,remarks,registration) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $stmt->execute([$row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6], $row[7], $row[8]]);
+    }
+    header('Location: customer.php');
+    exit;
+} else {
+    echo "ファイルのアップロードに失敗しました";
+}
