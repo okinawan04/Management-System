@@ -4,51 +4,97 @@ include 'db.php';
 
 // POST処理：納品登録
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deliver'])) {
-    $selectedDetails = $_POST['order_detail_ids'] ?? [];
+    $selected_rows = $_POST['selected_rows'] ?? [];
+    $order_detail_ids = $_POST['order_detail_ids'] ?? [];
+    $quantities = $_POST['quantities'] ?? [];
+    $customer_id = $_POST['customer_id'] ?? null;
 
-    if (!empty($selectedDetails)) {
+    if (!empty($selected_rows) && $customer_id) {
         $pdo->beginTransaction();
         try {
-            foreach ($selectedDetails as $detailId) {
-                // 注文IDを取得
-                $stmt = $pdo->prepare("SELECT yk_ordersID FROM orderdetail WHERE orderdetail_ID = :detail_id");
-                $stmt->execute([':detail_id' => $detailId]);
-                $order = $stmt->fetch(PDO::FETCH_ASSOC);
+            // まずorders_IDを取得
+            $stmt = $pdo->prepare("SELECT orders_ID FROM orders WHERE yk_customerID = :customer_id ORDER BY orders_ID DESC LIMIT 1");
+            $stmt->execute([':customer_id' => $customer_id]);
+            $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if ($order) {
-                    // 納品伝票を登録
+            if ($order) {
+                // 合計金額計算
+                $total = 0;
+                foreach ($selected_rows as $idx) {
+                    $detailId = $order_detail_ids[$idx];
+                    $qty = isset($quantities[$idx]) ? intval($quantities[$idx]) : 0;
+                    $stmt2 = $pdo->prepare("SELECT value FROM orderdetail WHERE orderdetail_ID = :detail_id");
+                    $stmt2->execute([':detail_id' => $detailId]);
+                    $row = $stmt2->fetch(PDO::FETCH_ASSOC);
+                    $total += $qty * ($row['value'] ?? 0);
+                }
+
+                // deliverysに登録
+                $stmt = $pdo->prepare("
+                    INSERT INTO deliverys (yk_ordersID, total)
+                    VALUES (:order_id, :total)
+                ");
+                $stmt->execute([
+                    ':order_id' => $order['orders_ID'],
+                    ':total' => $total
+                ]);
+                $deliverys_id = $pdo->lastInsertId();
+
+                // deliverydetailに登録
+                foreach ($selected_rows as $idx) {
+                    $detailId = $order_detail_ids[$idx];
+                    $qty = isset($quantities[$idx]) ? intval($quantities[$idx]) : 0;
+                    // deliverydetailへINSERT
                     $stmt = $pdo->prepare("
-                        INSERT INTO deliverys (yk_ordersID)
-                        VALUES (:order_id)
+                        INSERT INTO deliverydetail (yk_deliverysID, yk_orderdetailID, quantity)
+                        VALUES (:deliverys_id, :orderdetail_id, :quantity)
                     ");
                     $stmt->execute([
-                        ':order_id' => $order['yk_ordersID']
+                        ':deliverys_id' => $deliverys_id,
+                        ':orderdetail_id' => $detailId,
+                        ':quantity' => $qty
                     ]);
 
-                    // 注文明細の状態を更新
-                    $stmt = $pdo->prepare("UPDATE orderdetail SET state = 'YES' WHERE orderdetail_ID = :detail_id");
+                    // ここで納品済数量の合計を取得
+                    $stmt = $pdo->prepare("SELECT SUM(quantity) as sum_qty FROM deliverydetail WHERE yk_orderdetailID = :detail_id");
                     $stmt->execute([':detail_id' => $detailId]);
-                }
-            }
+                    $delivered = $stmt->fetch(PDO::FETCH_ASSOC)['sum_qty'] ?? 0;
 
-            $pdo->commit();
-            $message = "納品処理が完了しました。";
+                    // 注文数量を取得
+                    $stmt = $pdo->prepare("SELECT quantity FROM orderdetail WHERE orderdetail_ID = :detail_id");
+                    $stmt->execute([':detail_id' => $detailId]);
+                    $ordered = $stmt->fetch(PDO::FETCH_ASSOC)['quantity'] ?? 0;
+
+                    // 納品済数量が注文数量と等しい場合のみstateをYESに
+                    if ($delivered == $ordered) {
+                        $stmt = $pdo->prepare("UPDATE orderdetail SET state = 'YES' WHERE orderdetail_ID = :detail_id");
+                        $stmt->execute([':detail_id' => $detailId]);
+                    }
+                }
+
+                $pdo->commit();
+                $message = "納品処理が完了しました。";
+            } else {
+                throw new Exception("注文情報が見つかりません。");
+            }
         } catch (Exception $e) {
             $pdo->rollBack();
             $error = "エラー: " . $e->getMessage();
         }
     } else {
-        $error = "納品する商品を選択してください。";
+        $error = "納品する明細を選択してください。";
     }
 }
 ?>
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <title>納品書作成</title>
     <link rel="stylesheet" href="仮画面/top/delivery/delivery_form.css">
 </head>
+
 <body>
     <header>
         <div class="logo-container">
@@ -56,8 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deliver'])) {
             <div class="subtitle">納品書作成</div>
         </div>
         <div class="header-buttons">
-            <button class="header-btn" type="button" onclick="history.back()">戻る</button>
-            <input type="submit" form="deliveryForm" class="header-btn" value="保存">
+            <button class="header-btn" type="button" onclick="location.href='delivery_list.php'">戻る</button>
+            <input type="submit" form="deliveryForm" class="header-btn" name="deliver" value="保存">
         </div>
     </header>
 
@@ -92,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deliver'])) {
                             <th>数量</th>
                             <th>単価</th>
                             <th>金額（税込）</th>
-                            <th>操作</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -121,40 +167,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deliver'])) {
                         if ($rows):
                             $i = 1;
                             foreach ($rows as $row):
+                                // 納品済数量を取得
+                                $stmt2 = $pdo->prepare("SELECT SUM(quantity) FROM deliverydetail WHERE yk_orderdetailID = :detail_id");
+                                $stmt2->execute([':detail_id' => $row['orderdetail_ID']]);
+                                $delivered_qty = $stmt2->fetchColumn();
+                                $delivered_qty = is_null($delivered_qty) ? 0 : (int)$delivered_qty;
+
+                                // 未納品数
+                                $remain_qty = $row['quantity'] - $delivered_qty;
+                                if ($remain_qty < 0) $remain_qty = 0;
                         ?>
-                            <tr>
-                                <td class="row-number"><?= $i ?></td>
-                                <td>
-                                    <?= htmlspecialchars($row['title']) ?>
-                                    <input type="hidden" name="order_detail_ids[]" value="<?= $row['orderdetail_ID'] ?>">
-                                </td>
-                                <td><?= $row['quantity'] ?></td>
-                                <td><?= $row['value'] ?></td>
-                                <td><?= $row['value'] * $row['quantity'] ?></td>
-                                <td>
-                                    <button type="button" class="removeRowBtn" style="background:#f66;color:#fff;">削除</button>
-                                </td>
-                            </tr>
-                        <?php
-                            $sum_qty += $row['quantity'];
-                            $sum_value += $row['value'];
-                            $sum_total += $row['value'] * $row['quantity'];
-                            $i++;
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" name="selected_rows[]" value="<?= $i - 1 ?>" checked>
+                                    </td>
+                                    <td>
+                                        <?= htmlspecialchars($row['title']) ?>
+                                        <input type="hidden" name="order_detail_ids[]" value="<?= $row['orderdetail_ID'] ?>">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="quantities[]" value="<?= $remain_qty ?>" min="1" max="<?= $remain_qty ?>" style="width:60px;">
+                                        <span style="font-size:12px;color:#888;">(残:<?= $remain_qty ?>)</span>
+                                    </td>
+                                    <td><?= $row['value'] ?></td>
+                                    <td><?= $row['value'] * $remain_qty ?></td>
+
+                                </tr>
+                            <?php
+                                $sum_qty += $remain_qty;
+                                $sum_value += $row['value'];
+                                $sum_total += $row['value'] * $remain_qty;
+                                $i++;
                             endforeach;
-                        else:
-                        ?>
+                            ?>
+                        <?php else: ?>
                             <tr>
-                                <td colspan="6" style="text-align:center;">表示できる納品明細がありません。</td>
+                                <td colspan="5" style="text-align:center;">表示できる納品明細がありません。</td>
                             </tr>
                         <?php endif; ?>
                         <!-- 合計行 -->
                         <tr>
                             <td></td>
                             <td class="bold">合計</td>
-                            <td><input type="number" value="<?= $sum_qty ?>" readonly></td>
-                            <td><input type="number" value="<?= $sum_value ?>" readonly></td>
-                            <td><input type="number" value="<?= $sum_total ?>" readonly></td>
-                            <td></td>
+                            <td><input type="number" id="sum_qty" value="<?= $sum_qty ?>" readonly></td>
+                            <td><input type="number" id="sum_value" value="<?= $sum_value ?>" readonly></td>
+                            <td><input type="number" id="sum_total" value="<?= $sum_total ?>" readonly></td>
+                            
                         </tr>
                         <!-- 税率・消費税額 -->
                         <tr>
@@ -167,14 +225,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deliver'])) {
                             <td>
                                 <input type="number" id="tax_amount" name="tax_amount" value="<?= floor($sum_total * 0.1) ?>" readonly style="width: 100%;">
                             </td>
-                            <td></td>
+                            
                         </tr>
                         <tr>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td class="bottom-label">税込合計金額</td>
-                            <td colspan="2">
+                            <td colspan="1">
                                 <input type="number" id="total_with_tax" value="<?= $sum_total + floor($sum_total * 0.1) ?>" readonly style="width: 100%;">
                             </td>
                         </tr>
@@ -188,47 +246,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deliver'])) {
     <?php if (!empty($error)) echo "<p style='color:red;'>$error</p>"; ?>
 
     <script>
-    // 削除ボタンで明細行をformから削除
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.removeRowBtn').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                const tr = btn.closest('tr');
-                tr.remove();
-                recalcTotals();
-            });
-        });
-
         // 税率変更時に再計算
-        document.getElementById('tax_rate').addEventListener('input', recalcTotals);
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('tax_rate').addEventListener('input', recalcTotals);
 
-        // 明細削除や税率変更時に合計・税額・税込合計を再計算
-        function recalcTotals() {
-            let sum_qty = 0;
-            let sum_value = 0;
-            let sum_total = 0;
-            // 明細行を再取得
-            document.querySelectorAll('.delivery-table tbody tr').forEach(function(row) {
-                const cells = row.querySelectorAll('td');
-                if (cells.length < 6) return; // 合計・税率行などはスキップ
-                // 数量・単価・金額
-                const qty = parseInt(cells[2].textContent) || 0;
-                const value = parseInt(cells[3].textContent) || 0;
-                const total = parseInt(cells[4].textContent) || 0;
-                sum_qty += qty;
-                sum_value += value;
-                sum_total += total;
+            // 数量変更時にも再計算
+            document.querySelectorAll('.delivery-table tbody input[name="quantities[]"]').forEach(function(input) {
+                input.addEventListener('input', recalcTotals);
             });
-            document.querySelector('input[type="number"][readonly][value="<?= $sum_qty ?>"]').value = sum_qty;
-            document.querySelector('input[type="number"][readonly][value="<?= $sum_value ?>"]').value = sum_value;
-            document.querySelector('input[type="number"][readonly][value="<?= $sum_total ?>"]').value = sum_total;
 
-            // 税率・税額・税込合計
-            const taxRate = parseFloat(document.getElementById('tax_rate').value) || 0;
-            const taxAmount = Math.floor(sum_total * (taxRate / 100));
-            document.getElementById('tax_amount').value = taxAmount;
-            document.getElementById('total_with_tax').value = sum_total + taxAmount;
-        }
-    });
+            // 合計・税額・税込合計を再計算
+            function recalcTotals() {
+                let sum_qty = 0;
+                let sum_value = 0;
+                let sum_total = 0;
+                // 明細行を再取得
+                document.querySelectorAll('.delivery-table tbody tr').forEach(function(row) {
+                    if (!row.querySelector('.row-number')) return;
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length < 6) return;
+                    // 数量はinputから取得
+                    const qtyInput = cells[2].querySelector('input[type="number"]');
+                    const qty = qtyInput ? parseInt(qtyInput.value) || 0 : 0;
+                    const value = parseInt(cells[3].textContent) || 0;
+                    const total = value * qty;
+                    sum_qty += qty;
+                    sum_value += value;
+                    sum_total += total;
+                    // 金額セルも更新
+                    cells[4].textContent = total;
+                });
+                document.getElementById('sum_qty').value = sum_qty;
+                document.getElementById('sum_value').value = sum_value;
+                document.getElementById('sum_total').value = sum_total;
+
+                // 税率・税額・税込合計
+                const taxRate = parseFloat(document.getElementById('tax_rate').value) || 0;
+                const taxAmount = Math.floor(sum_total * (taxRate / 100));
+                document.getElementById('tax_amount').value = taxAmount;
+                document.getElementById('total_with_tax').value = sum_total + taxAmount;
+            }
+        });
     </script>
 </body>
+
 </html>

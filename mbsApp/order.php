@@ -18,13 +18,23 @@ $customers = $stmt->fetchAll();
     </style>
 </head>
 <body>
+    <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
+    <div id="banner" style="background:#4caf50;color:#fff;padding:10px;text-align:center;position:fixed;top:0;left:0;width:100%;z-index:1000;">
+        注文書が保存されました
+    </div>
+    <script>
+        setTimeout(() => {
+            document.getElementById('banner').style.display = 'none';
+        }, 5000);
+    </script>
+    <?php endif; ?>
     <header>
         <div class="logo-container">
             <div class="logo">緑橋書店</div>
             <div class="subtitle">注文書作成</div>
         </div>
         <div class="header-buttons">
-            <button class="header-btn" type="button" onclick="history.back()">戻る</button>
+            <button class="header-btn" type="button" onclick="location.href='order_list.php'">戻る</button>
             <input type="submit" form="orderForm" class="header-btn" value="保存">
         </div>
     </header>
@@ -48,14 +58,14 @@ $customers = $stmt->fetchAll();
                     </select>
                     <span>様</span>
                 </div>
-                <!--<div id="newCustomerForm" style="display:none; margin-top:10px;">
+                <div id="newCustomerForm" style="display:none; margin-top:10px;">
                     <label>顧客名:</label>
                     <input type="text" name="new_customer_name" id="new_customer_name"><br>
                     <label>住所:</label>
                     <input type="text" name="new_customer_address" id="new_customer_address"><br>
                     <label>電話番号:</label>
-                    <input type="text" name="new_customer_phone" id="new_customer_phone"><br>
-                </div> -->
+                    <input type="text" name="new_customer_phoneNo" id="new_customer_phone"><br>
+                </div> 
                 <div class="note">下記の通りにご注文申し上げます</div>
 
                 <table class="order-table">
@@ -97,7 +107,7 @@ $customers = $stmt->fetchAll();
     </main>
     <script>
         // 新規顧客フォームの表示/非表示（未使用のためコメントアウト）
-        /** function toggleNewCustomerForm() {
+        function toggleNewCustomerForm() {
             const customerSelect = document.getElementById('customer_id');
             const newCustomerForm = document.getElementById('newCustomerForm');
             if (customerSelect.value === "new") {
@@ -111,7 +121,7 @@ $customers = $stmt->fetchAll();
                 document.getElementById('new_customer_address').required = false;
                 document.getElementById('new_customer_phone').required = false;
             }
-        } **/
+        } 
 
         // 合計金額自動計算
         function calcTotal() {
