@@ -1,0 +1,28 @@
+<?php
+// fetch_data.php
+include 'db.php';
+
+include 'store_choise.php';
+
+$sql = "
+    SELECT
+        c.customer_ID,
+        c.name AS customer_name,
+        c.phoneNo AS customer_phone,
+        c.address AS customer_address
+    FROM
+        customer c
+
+    WHERE
+        c.storeName = :selected_store
+    
+    ORDER BY
+        c.customer_ID ASC
+
+";
+
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':selected_store', $selectedStore, PDO::PARAM_STR);
+$stmt->execute();
+$results = $stmt->fetchAll();
+?>
