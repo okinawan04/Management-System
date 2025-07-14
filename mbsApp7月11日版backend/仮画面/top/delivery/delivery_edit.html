@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <title>納品書編集</title>
+    <link rel="stylesheet" href="delivery_edit.css" />
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <div class="logo">緑橋書店</div>
+            <div class="subtitle">納品書編集</div>
+        </div>
+        <div class="header-buttons">
+            <button class="header-btn save" onclick="saveOrder()">保存</button>
+            <a href="delivery_check.html" class="header-btn delivery_check">戻る</a>
+        </div>
+    </header>
+
+    <script>
+        function saveOrder() {
+            // データ保存処理（省略）
+            // 保存完了フラグをURLに追加して遷移
+            window.location.href = 'delivery_check.html?saved=true';
+        }
+
+        // 店舗名の反映
+        const logo = document.querySelector('.logo');
+        const savedStore = localStorage.getItem('selectedStore');
+        if (savedStore) {
+            logo.textContent = savedStore;
+        }
+    </script>
+
+    <main>
+        <div class="delivery_form">
+            <div class="form-header">
+                <div class="title">納品書</div>
+                <input type="date" class="delivery-date" />
+            </div>
+
+            <div class="recipient">
+                <input type="text" class="recipient-name" />
+                <span>様</span>
+            </div>
+
+            <div class="note">下記の通り納品いたしました</div>
+
+            <table class="delivery-table">
+                <thead>
+                    <tr>
+                        <th>選択</th>
+                        <th>品名</th>
+                        <th>数量</th>
+                        <th>単価</th>
+                        <th>金額（税込）</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox" name="select1" /></td>
+                        <td><input type="text" name="item_name1" /></td>
+                        <td><input type="number" name="price1" step="0.01" /></td>
+                        <td><input type="number" name="quantity1" /></td>
+                        <td><input type="text" name="order_date1" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="select2" /></td>
+                        <td><input type="text" name="item_name2" /></td>
+                        <td><input type="number" name="price2" step="0.01" /></td>
+                        <td><input type="number" name="quantity2" /></td>
+                        <td><input type="text" name="order_date2" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="select3" /></td>
+                        <td><input type="text" name="item_name3" /></td>
+                        <td><input type="number" name="price3" step="0.01" /></td>
+                        <td><input type="number" name="quantity3" /></td>
+                        <td><input type="text" name="order_date3" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="select4" /></td>
+                        <td><input type="text" name="item_name4" /></td>
+                        <td><input type="number" name="price4" step="0.01" /></td>
+                        <td><input type="number" name="quantity4" /></td>
+                        <td><input type="text" name="order_date4" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="select5" /></td>
+                        <td><input type="text" name="item_name5" /></td>
+                        <td><input type="number" name="price5" step="0.01" /></td>
+                        <td><input type="number" name="quantity5" /></td>
+                        <td><input type="text" name="order_date5" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="select6" /></td>
+                        <td><input type="text" name="item_name6" /></td>
+                        <td><input type="number" name="price6" step="0.01" /></td>
+                        <td><input type="number" name="quantity6" /></td>
+                        <td><input type="text" name="order_date6" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="select7" /></td>
+                        <td><input type="text" name="item_name7" /></td>
+                        <td><input type="number" name="price7" step="0.01" /></td>
+                        <td><input type="number" name="quantity7" /></td>
+                        <td><input type="text" name="order_date7" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="select8" /></td>
+                        <td><input type="text" name="item_name8" /></td>
+                        <td><input type="number" name="price8" step="0.01" /></td>
+                        <td><input type="number" name="quantity8" /></td>
+                        <td><input type="text" name="order_date8" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="select9" /></td>
+                        <td><input type="text" name="item_name9" /></td>
+                        <td><input type="number" name="price9" step="0.01" /></td>
+                        <td><input type="number" name="quantity9" /></td>
+                        <td><input type="text" name="order_date9" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="select10" /></td>
+                        <td><input type="text" name="item_name10" /></td>
+                        <td><input type="number" name="price10" step="0.01" /></td>
+                        <td><input type="number" name="quantity10" /></td>
+                        <td><input type="text" name="order_date10" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="select11" /></td>
+                        <td><input type="text" name="item_name11" /></td>
+                        <td><input type="number" name="price11" step="0.01" /></td>
+                        <td><input type="number" name="quantity11" /></td>
+                        <td><input type="text" name="order_date11" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="select12" /></td>
+                        <td><input type="text" name="item_name12" /></td>
+                        <td><input type="number" name="price12" step="0.01" /></td>
+                        <td><input type="number" name="quantity12" /></td>
+                        <td><input type="text" name="order_date12" /></td>
+                    </tr>
+
+                    <!-- 合計行 -->
+                    <tr>
+                        <td></td>
+                        <td class="bold">合計</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <!-- 税率等 -->
+                    <tr>
+                        <td></td>
+                        <td class="bottom-label">税率（％）</td>
+                        <td><input type="number" min="0" name="tax_rate" /></td>
+                        <td class="bottom-label">消費税額</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="bottom-label">税込合計金額</td>
+                        <td colspan="3"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
