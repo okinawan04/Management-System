@@ -1,0 +1,209 @@
+/* 納品書編集画面全体の基本スタイル */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffd8a8;
+}
+
+/* ヘッダー全体のスタイル */
+header {
+    background-color: #ffd8a8;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #000
+}
+
+/* ロゴ */
+.logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #000;
+}
+
+/* サブタイトル（納品書編集） */
+.subtitle {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000000;
+}
+
+/* ヘッダーボタンのコンテナ */
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* ヘッダーボタン */
+.header-btn {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #aaa;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px #999;
+    transition: all 0.1s ease-in-out;
+}
+
+.header-btn:hover {
+    background-color: #fefefe;
+}
+
+.header-btn:active {
+    box-shadow: 0 2px #666;
+    transform: translateY(2px);
+}
+
+/* 納品書フォーム全体のスタイル */
+.delivery_form {
+    background-color: #ffffff;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 794px;  
+    max-width: 100%;
+    overflow-x: auto;
+    box-sizing: border-box;
+}
+
+/* フォームヘッダー（タイトルと日付の横並び） */
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* フォームタイトル */
+.title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+}
+
+/* 注文日付表示 */
+.delivery-date {
+    font-size: 1rem;
+    padding: 0.3rem;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* 顧客名欄 */
+.recipient {
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+/* 顧客名入力欄 */
+.recipient-name {
+    font-size: 1rem;
+    padding: 0.3rem;
+    width: 200px;
+    margin-right: 0.5rem;
+}
+
+/* 注記（下記の通り～） */
+.note {
+    font-size: 0.9rem;
+    color: #333;
+    margin-top: 0.3rem;
+    margin-bottom: 1rem;
+}
+
+/* 納品テーブル全体のスタイル */
+.delivery-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    margin: 20px 0;
+}
+
+/* テーブルのセル（ヘッダー・データ共通） */
+.delivery-table th,
+.delivery-table td {
+    border: 1px solid #000;
+    padding: 8px;
+    vertical-align: top;
+}
+
+.delivery-table thead tr{
+    background-color: #f0f0f0;
+}
+
+/* 各列の幅指定 */
+/* 選択列 */
+.delivery-table th:nth-child(1), 
+.delivery-table td:nth-child(1) {
+    width: 40px;
+}
+/* 品名 */
+.delivery-table th:nth-child(2),  
+.delivery-table td:nth-child(2) {
+    width: 280px;
+}
+/* 単価 */
+.delivery-table th:nth-child(3),  
+.delivery-table td:nth-child(3) {
+    width: 80px;
+}
+/* 数量 */
+.delivery-table th:nth-child(4),  
+.delivery-table td:nth-child(4) {
+    width: 100px;
+}
+/* 注文日 */
+.delivery-table th:nth-child(5),  
+.delivery-table td:nth-child(5) {
+    width: 250px;
+}
+
+/* テーブル内の入力フォーム共通 */
+.delivery-table input[type="text"],
+.delivery-table input[type="number"],
+.delivery-table textarea {
+    width: 100%;
+    padding: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+/* テーブル内の入力フォーム（チェックボックス）*/
+.delivery-table input[type="checkbox"] {
+    transform: scale(1.5);
+    cursor: pointer;
+    margin: 4px auto; 
+    display: block;
+}
+
+.delivery-table textarea {
+    resize: vertical;
+    height: 60px;
+}
+
+/* セル内の下ラベル配置用 */
+.bottom-label {
+    font-size: 0.85rem;
+    color: #333;
+    margin-bottom: 0;
+    font-weight: bold;
+    text-align: center; 
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* ヘッダーと同じスタイルをラベル用セルにも適用 */
+.delivery-table td.bold,
+.delivery-table td.bottom-label {
+    font-size: 0.85rem; 
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}

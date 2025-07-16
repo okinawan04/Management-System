@@ -1,0 +1,127 @@
+/* トップ画面全体の基本スタイル */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+/* ヘッダー全体の基本スタイル */
+header {
+    background-color: #f0f0f0;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #000;
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 0.5rem; 
+}
+
+/* ロゴ */
+.logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #000000;
+}
+
+/* 店舗選択 */
+.control-panel select {
+    font-size: 1.2rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.control-panel label {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* △のボタンレイアウト */
+.triangle-layout {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    min-height: 600px;
+    max-height: 600px;
+    margin: 0 auto;
+}
+
+/* 共通ボタンスタイル */
+.main-btn {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000;
+    border-radius: 10px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    transition: box-shadow 0.15s ease, background-color 0.15s ease;
+    cursor: pointer;
+}
+
+/* 押す前 */
+.main-btn:hover {
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* 押した時（軽く沈む） */
+.main-btn:active {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* 顧客情報一覧ボタン */
+.customer {
+    background-color: #d0f0c0; /* 緑色 */
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* 注文書一覧ボタン */
+.order {
+    background-color: #add8e6; /* 青色 */
+    bottom: 10%;
+    left: 30%;
+    transform: translateX(-50%);
+}
+
+/* 納品書一覧ボタン */
+.delivery {
+    background-color: #ffd8a8; /* オレンジ色 */
+    bottom: 10%;
+    left: 70%;
+    transform: translateX(-50%);
+}
+
+@media (max-width: 768px) {
+    .triangle-layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 2rem 1rem;
+        height: auto;
+        max-height: none;
+    }
+
+    .main-btn {
+        position: static;
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        padding: 2rem;
+        transform: none;
+        font-size: 1.2rem;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
