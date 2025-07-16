@@ -130,13 +130,13 @@ if ($selected_id && !$selectedStore) {
             <div class="subtitle">納品書作成</div>
         </div>
         <div class="header-buttons">
+            <input type="submit" form="deliveryForm" class="header-btn" name="deliver" value="保存">
             <form action="customer_choise.php" method="post" style="display:inline;">
                 <input type="hidden" name="selected_store" value="<?= htmlspecialchars($selectedStore) ?>">
                 <input type="hidden" name="from" value="<?= htmlspecialchars($source_list_page) ?>">
                 <input type="hidden" name="customer_id" value="<?= htmlspecialchars($selected_id) ?>">
                 <button class="header-btn" type="submit">戻る</button>
-            </form>
-            <input type="submit" form="deliveryForm" class="header-btn" name="deliver" value="保存">
+            </form>      
         </div>
     </header>
 
