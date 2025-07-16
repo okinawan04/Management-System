@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <title>注文書確認</title>
+    <link rel="stylesheet" href="order_check.css" />
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <div class="logo">緑橋書店</div>
+            <div class="subtitle">注文書確認</div>
+        </div>
+        <div class="header-buttons">
+            <button class="header-btn" id="printButton">印刷</button>
+            <a href="order_edit.html" class="header-btn order_edit">編集</a>
+            <button class="header-btn" id="deleteButton">削除</button>
+            <a href="order.html" class="header-btn order">戻る</a>
+        </div>
+    </header>
+    
+    <div id="saveBanner" style="display: none; background: #dff0d8; color: #3c763d; padding: 10px; text-align: center;">
+        保存が完了しました。
+    </div>
+
+    <main>
+        <div class="order-form">
+            <div class="form-header">
+                <div class="title">注文書</div>
+                <input type="date" class="order-date" />
+            </div>
+
+            <div class="recipient">
+                <input type="text" class="recipient-name" />
+                <span>様</span>
+            </div>
+
+            <div class="note">下記の通りにご注文申し上げます</div>
+
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th></th> <!-- 番号列の見出しは空白 -->
+                        <th>品名</th>
+                        <th>数量</th>
+                        <th>単価</th>
+                        <th>摘要</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="row-number">1</td><td><input type="text" /></td><td><input type="number" /></td><td><input type="number" /></td><td><input type="text" /></td></tr>
+                    <tr><td class="row-number">2</td><td><input type="text" /></td><td><input type="number" /></td><td><input type="number" /></td><td><input type="text" /></td></tr>
+                    <tr><td class="row-number">3</td><td><input type="text" /></td><td><input type="number" /></td><td><input type="number" /></td><td><input type="text" /></td></tr>
+                    <tr><td class="row-number">4</td><td><input type="text" /></td><td><input type="number" /></td><td><input type="number" /></td><td><input type="text" /></td></tr>
+                    <tr><td class="row-number">5</td><td><input type="text" /></td><td><input type="number" /></td><td><input type="number" /></td><td><input type="text" /></td></tr>
+                    <tr><td class="row-number">6</td><td><input type="text" /></td><td><input type="number" /></td><td><input type="number" /></td><td><input type="text" /></td></tr>
+                    <tr><td class="row-number">7</td><td><input type="text" /></td><td><input type="number" /></td><td><input type="number" /></td><td><input type="text" /></td></tr>
+                    <tr><td class="row-number">8</td><td><input type="text" /></td><td><input type="number" /></td><td><input type="number" /></td><td><input type="text" /></td></tr>
+                    <tr><td class="row-number">9</td><td><input type="text" /></td><td><input type="number" /></td><td><input type="number" /></td><td><input type="text" /></td></tr>
+                    <tr><td class="row-number">10</td><td><input type="text" /></td><td><input type="number" /></td><td><input type="number" /></td><td><input type="text" /></td></tr>
+                    <tr><td class="row-number">11</td><td><input type="text" /></td><td><input type="number" /></td><td><input type="number" /></td><td><input type="text" /></td></tr>
+                    <tr><td class="row-number">12</td><td><input type="text" /></td><td><input type="number" /></td><td><input type="number" /></td><td><input type="text" /></td></tr>
+                    <tr><td class="row-number">13</td><td><input type="text" /></td><td><input type="number" /></td><td><input type="number" /></td><td><input type="text" /></td></tr>
+                    <tr><td class="row-number">14</td><td><input type="text" /></td><td><input type="number" /></td><td><input type="number" /></td><td><input type="text" /></td></tr>
+                    <tr><td class="row-number">15</td><td><input type="text" /></td><td><input type="number" /></td><td><input type="number" /></td><td><input type="text" /></td></tr>
+
+                    <tr>
+                        <td></td>
+                        <td><textarea placeholder="備考欄"></textarea></td>
+                        <td><div class="bottom-label">合計金額</div></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 印刷ボタン処理
+            document.getElementById("printButton").addEventListener("click", function() {
+                window.print();
+            });
+
+            // 削除ボタン処理
+            document.getElementById("deleteButton").addEventListener("click", function() {
+                const confirmed = confirm("本当に削除しますか？");
+                if (confirmed) {
+                    // 削除処理が必要ならここで実施（例：サーバー通信など）
+                    window.location.href = "order.html?deleted=true";
+                }
+            });
+
+            // 店舗名の反映
+            const logo = document.querySelector('.logo');
+            const savedStore = localStorage.getItem('selectedStore');
+            if (savedStore) {
+                logo.textContent = savedStore;
+            }
+
+            // 保存完了バナー表示
+            const params = new URLSearchParams(window.location.search);
+            if (params.get("saved") === "true") {
+                const banner = document.getElementById("saveBanner");
+                banner.style.display = "block";
+                setTimeout(() => {
+                    banner.style.display = "none";
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>

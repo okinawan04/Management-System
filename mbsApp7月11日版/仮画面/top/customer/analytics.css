@@ -1,0 +1,208 @@
+/* 統計情報分析画面全体のスタイル */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #d4f4dd;
+}
+ 
+/* ヘッダー全体の基本スタイル */
+header {
+    background-color: #d4f4dd;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #000
+}
+ 
+/* ロゴ */
+.logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #000000;
+}
+ 
+/* サブタイトル（統計情報分析） */
+.subtitle {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000000;
+}
+ 
+/* ヘッダーボタンのコンテナ */
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+ 
+/* ヘッダーボタン */
+.header-btn {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #aaa;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px #999;
+    transition: all 0.1s ease-in-out;
+}
+.header-btn:hover {
+    background-color: #f9f9f9;
+}
+.header-btn:active {
+    box-shadow: 0 2px #666;
+    transform: translateY(2px);
+}
+ 
+/* 画面上部 */
+.info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 20px;
+}
+ 
+/* テーブルを囲むエリア */
+.table-container {
+    background-color: #ffffff;
+    margin: 0 2rem 2rem 2rem;
+    flex: 1;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+ 
+/* 顧客情報一覧表と配達情報一覧表 */
+.table-wrapper {
+    flex: 1;
+}
+
+.customer-info,
+.delivery-info {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: #fff;
+}
+/* 表のセル（ヘッダー・データ共通） */
+.customer-info th,
+.customer-info td,
+.delivery-info th,
+.delivery-info td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: left;
+}
+.customer-info th,
+.delivery-info th {
+    background-color: #f2f2f2;
+    width: 30%;
+}
+ 
+/* 画面下部 */
+.content {
+    display: flex;
+    margin-top: 20px;
+    gap: 20px;
+}
+ 
+/* グラフエリア */
+.graph {
+    padding: 10px;
+    flex: 1;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: #fff;
+    max-height:500px;
+}
+ 
+/* 履歴エリア */
+.history {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 10px;
+    background-color: white;
+    flex: 1;
+    position: relative;
+}
+ 
+/* 履歴表 */
+.scroll-area {
+    max-height: 300px;
+    overflow-y: auto;
+}
+ 
+/* 履歴テーブル全体のスタイル */
+.history table {
+    border-collapse: separate; 
+    border-spacing: 0;
+    width: 100%;
+    min-width: 600px;
+}
+ 
+/* ヘッダー固定 */
+.history thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f0f0f0;
+    z-index: 3;
+    border: 1px solid #000; 
+}
+ 
+/* 表のセル（ヘッダー・データ共通） */
+.history th,
+.history td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: center;
+    background-color: #f0f0f0; 
+}
+ 
+/* グラフプレースホルダー */
+.graph-placeholder {
+    background-color: #fff;
+    height: 300px;
+    border: 1px dashed #888;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    margin-top: 10px;
+}
+ 
+/* 共通テーブル */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: #fff;
+}
+ 
+th, td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: center;
+}
+ 
+@media (max-width: 768px) {
+    .info {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .table-container {
+        flex: unset;
+        width: 100%;
+        margin: 0 2rem 1rem 2rem;
+    }
+    .content {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .graph,
+    .history {
+        width: 100%;
+        max-height: none;
+    }
+}
