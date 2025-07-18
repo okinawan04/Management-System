@@ -253,37 +253,50 @@ if ($selected_id && !$selectedStore) {
     <?php if (!empty($error)) echo "<p style='color:red;'>$error</p>"; ?>
 
     <script>
-        // 税率変更時に再計算
-        document.addEventListener('DOMContentLoaded', function() {
-            // 数量変更時にも再計算
-            document.querySelectorAll('.delivery-table tbody input[name="quantities[]"]').forEach(function(input) {
-                input.addEventListener('input', recalcTotals);
-            });
+    // 数量変更やチェックボックス変更時に合計・金額を再計算
+    document.addEventListener('DOMContentLoaded', function() {
+        // 数量変更時
+        document.querySelectorAll('.delivery-table tbody input[name="quantities[]"]').forEach(function(input) {
+            input.addEventListener('input', recalcTotals);
+        });
+        // チェックボックス変更時
+        document.querySelectorAll('.delivery-table tbody input[type="checkbox"][name="selected_rows[]"]').forEach(function(checkbox) {
+            checkbox.addEventListener('change', recalcTotals);
+        });
 
-            // 合計・税額・税込合計を再計算
-            function recalcTotals() {
-                let sum_qty = 0;
-                let sum_total = 0;
-                // 明細行を再取得
-                document.querySelectorAll('.delivery-table tbody tr').forEach(function(row) {
-                    if (!row.querySelector('.row-number')) return;
-                    const cells = row.querySelectorAll('td');
-                    if (cells.length < 5) return;
-                    // 数量はinputから取得
-                    const qtyInput = cells[2].querySelector('input[type="number"]');
-                    const qty = qtyInput ? parseInt(qtyInput.value) || 0 : 0;
-                    const value = parseInt(cells[3].textContent) || 0;
+        function recalcTotals() {
+            let sum_qty = 0;
+            let sum_total = 0;
+            // 明細行を再取得
+            document.querySelectorAll('.delivery-table tbody tr').forEach(function(row) {
+                const checkbox = row.querySelector('input[type="checkbox"][name="selected_rows[]"]');
+                const qtyInput = row.querySelector('input[name="quantities[]"]');
+                const valueCell = row.querySelectorAll('td')[2];
+                const totalCell = row.querySelectorAll('td')[4];
+                if (!checkbox || !qtyInput || !valueCell || !totalCell) return;
+
+                // チェックが入っている行だけ計算
+                if (checkbox.checked) {
+                    const qty = parseInt(qtyInput.value) || 0;
+                    const value = parseInt(valueCell.textContent) || 0;
                     const total = value * qty;
                     sum_qty += qty;
                     sum_total += total;
-                    // 金額セルも更新
-                    cells[4].textContent = total;
-                });
-                document.getElementById('sum_qty').value = sum_qty;
-                document.getElementById('sum_total').value = sum_total;
-            }
-        });
-    </script>
+                    totalCell.textContent = total;
+                    qtyInput.disabled = false;
+                } else {
+                    totalCell.textContent = 0;
+                    qtyInput.disabled = true;
+                }
+            });
+            document.getElementById('sum_qty').value = sum_qty;
+            document.getElementById('sum_total').value = sum_total;
+        }
+
+        // 初期表示時にも計算
+        recalcTotals();
+    });
+</script>
 </body>
 
 </html>
