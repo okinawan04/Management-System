@@ -149,7 +149,7 @@ if ($selected_id && !$selectedStore) {
             <form id="deliveryForm" method="post">
                 <input type="hidden" name="selected_store" value="<?= htmlspecialchars((string)$selectedStore) ?>">
                 <div class="recipient">
-                    <select name="customer_id" id="customer_id" class="recipient-name" required
+                    <select name="customer_id" id="customer_id" class="recipient-name" required disabled
                         onchange="document.getElementById('deliveryForm').submit();">
                         <option value="">顧客を選択</option>
                         <?php
@@ -161,6 +161,7 @@ if ($selected_id && !$selectedStore) {
                         }
                         ?>
                     </select>
+                    <input type="hidden" name="customer_id" value="<?= htmlspecialchars($selected_id) ?>">
                     <span>様</span>
                 </div>
                 <div class="note">下記の通り納品いたしました</div>
