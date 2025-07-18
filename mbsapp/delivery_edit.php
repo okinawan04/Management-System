@@ -122,7 +122,6 @@ $details = $stmt_details->fetchAll();
             <input type="hidden" name="selected_store" value="<?= htmlspecialchars($selectedStore) ?>">
             <button class="header-btn" type="submit">戻る</button>
         </form>
-       
     </div>
 </header>
 <main>

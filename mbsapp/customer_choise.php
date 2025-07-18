@@ -2,8 +2,6 @@
 // db.php でデータベース接続
 include 'db.php';
 
-
-
 // $selectedStore を初期化
 $selectedStore = null; 
 

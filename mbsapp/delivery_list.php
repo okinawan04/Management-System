@@ -103,7 +103,6 @@ if (!empty($selectedStore)) {
             <div class="subtitle">納品書一覧</div>
         </div>
         <div class="header-buttons">
-            
             <!-- 作成ボタンが押下されたら、顧客選択画面に遷移する -->
             <form action="customer_choise.php" method="post" style="display: inline;">
                 <input type="hidden" name="selected_store" value="<?= htmlspecialchars($selectedStore) ?>">

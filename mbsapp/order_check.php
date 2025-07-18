@@ -83,7 +83,6 @@ if (!$order) {
             <div class="subtitle">注文書確認画面</div>
         </div>
         <div class="header-buttons">
-                
             <!-- 編集・削除ボタン等は必要に応じて -->
              <a href="order_edit.php?no=<?= $order_id ?>&selected_store=<?= htmlspecialchars($selectedStore) ?>" class="header-btn order_edit">編集</a>
              

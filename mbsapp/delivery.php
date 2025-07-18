@@ -114,11 +114,13 @@ if ($selected_id && !$selectedStore) {
 ?>
 <!DOCTYPE html>
 <html lang="ja">
+  
 <head>
     <meta charset="UTF-8">
     <title>納品書作成</title>
     <link rel="stylesheet" href="仮画面/top/delivery/delivery_form.css">
 </head>
+
 <body>
     <header>
         <div class="logo-container">
@@ -129,6 +131,7 @@ if ($selected_id && !$selectedStore) {
         </div>
         <div class="header-buttons">
             <input type="submit" form="deliveryForm" class="header-btn" name="deliver" value="保存">
+
             <form action="customer_choise.php" method="post" style="display:inline;">
                 <input type="hidden" name="selected_store" value="<?= htmlspecialchars($selectedStore) ?>">
                 <input type="hidden" name="from" value="<?= htmlspecialchars($source_list_page) ?>">
@@ -202,6 +205,7 @@ if ($selected_id && !$selectedStore) {
                                 $stmt2->execute([':detail_id' => $row['orderdetail_ID']]);
                                 $delivered_qty = $stmt2->fetchColumn();
                                 $delivered_qty = is_null($delivered_qty) ? 0 : (int)$delivered_qty;
+
                                 // 未納品数
                                 $remain_qty = $row['quantity'] - $delivered_qty;
                                 if ($remain_qty < 0) $remain_qty = 0;
@@ -251,7 +255,6 @@ if ($selected_id && !$selectedStore) {
     <script>
         // 税率変更時に再計算
         document.addEventListener('DOMContentLoaded', function() {
-
             // 数量変更時にも再計算
             document.querySelectorAll('.delivery-table tbody input[name="quantities[]"]').forEach(function(input) {
                 input.addEventListener('input', recalcTotals);
@@ -278,7 +281,6 @@ if ($selected_id && !$selectedStore) {
                 });
                 document.getElementById('sum_qty').value = sum_qty;
                 document.getElementById('sum_total').value = sum_total;
-
             }
         });
     </script>

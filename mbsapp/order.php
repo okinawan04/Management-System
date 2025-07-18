@@ -69,8 +69,6 @@ $returnToCustomerChoiseFrom = 'order.php';
                 <?php endif; ?>
                 <button class="header-btn" type="submit">戻る</button>
             </form>
-
-            
         </div>
     </header>
 
