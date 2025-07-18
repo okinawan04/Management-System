@@ -211,14 +211,15 @@ if (!$order) {
                         <?php endforeach; ?>
 
                         <tr>
-                            <td></td>
-                            <td colspan="2"></td>
-                            <td>
-                                <div class="bottom-label">合計金額</div>
-                                <input type="text" value="<?= number_format($order['total']) ?>" readonly>
-                            </td>
-                            <td></td>
-                        </tr>
+                        <td></td>
+                        <td>
+                            <div class="bottom-label">合計</div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <input type="text" value="<?= number_format($order['total']) ?>" readonly>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

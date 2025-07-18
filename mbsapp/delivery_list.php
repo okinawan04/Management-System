@@ -122,11 +122,10 @@ if (!empty($selectedStore)) {
                     <select name="sort" id="sortSelect" onchange="this.form.submit()">
                         <option value="no_asc" <?= $sort === 'no_asc' ? 'selected' : '' ?>>No.昇順</option>
                         <option value="no_desc" <?= $sort === 'no_desc' ? 'selected' : '' ?>>No.降順</option>
-                        <option value="customer" <?= $sort === 'customer' ? 'selected' : '' ?>>顧客名順</option>
                         <option value="amount_desc" <?= $sort === 'amount_desc' ? 'selected' : '' ?>>金額多い順</option>
                         <option value="amount_asc" <?= $sort === 'amount_asc' ? 'selected' : '' ?>>金額少ない順</option>
-                        <option value="date_asc" <?= $sort === 'date_asc' ? 'selected' : '' ?>>作成日昇順</option>
-                        <option value="date_desc" <?= $sort === 'date_desc' ? 'selected' : '' ?>>作成日降順</option>
+                        <option value="date_asc" <?= $sort === 'date_asc' ? 'selected' : '' ?>>登録日昇順</option>
+                        <option value="date_desc" <?= $sort === 'date_desc' ? 'selected' : '' ?>>登録日降順</option>
                     </select>
                 </label>
                 <input type="text" class="search-box" name="keyword" value="<?= htmlspecialchars($keyword) ?>" placeholder="キーワードを入力">
@@ -141,7 +140,7 @@ if (!empty($selectedStore)) {
                         <th class="nocol">No</th>
                         <th>顧客名</th>
                         <th>担当者名</th>
-                        <th>税合計金額</th>
+                        <th>合計金額</th>
                         <th>作成日</th>
                     </tr>
                 </thead>

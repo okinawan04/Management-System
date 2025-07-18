@@ -31,27 +31,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['source_list_page'])) 
 
 // 「戻る」ボタンのリンク先を動的に決定
 $backButtonAction = 'order_list.php'; // デフォルトの戻り先
-$backButtonStoreId = ''; 
-$backButtonFromPage = ''; 
+$backButtonStoreId = '';
+$backButtonFromPage = '';
 
 if ($sourceListPage) {
     $backButtonAction = 'customer_choise.php';
-    $backButtonFromPage = $sourceListPage; 
-    $backButtonStoreId = $selectedStoreFromCustomerChoise; 
+    $backButtonFromPage = $sourceListPage;
+    $backButtonStoreId = $selectedStoreFromCustomerChoise;
 }
 
-$returnToCustomerChoiseFrom = 'order.php'; 
+$returnToCustomerChoiseFrom = 'order.php';
 
 ?>
 
 
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <title>注文書作成</title>
     <link rel="stylesheet" href="仮画面/top/order/order_form.css">
 </head>
+
 <body>
     <header>
         <div class="logo-container">
@@ -61,7 +63,7 @@ $returnToCustomerChoiseFrom = 'order.php';
             <div class="subtitle">注文書作成</div>
         </div>
         <div class="header-buttons">
-            <button id="saveOrderBtn" class="header-btn" type="button">保存</button> 
+            <button id="saveOrderBtn" class="header-btn" type="button">保存</button>
             <form id="backToCustomerChoiseForm" action="<?= htmlspecialchars($backButtonAction) ?>" method="POST" style="display:inline;">
                 <?php if ($sourceListPage): ?>
                     <input type="hidden" name="from" value="<?= htmlspecialchars($backButtonFromPage) ?>">
@@ -69,6 +71,8 @@ $returnToCustomerChoiseFrom = 'order.php';
                 <?php endif; ?>
                 <button class="header-btn" type="submit">戻る</button>
             </form>
+
+
         </div>
     </header>
 
@@ -83,7 +87,7 @@ $returnToCustomerChoiseFrom = 'order.php';
                 </div>
 
                 <div class="recipient">
-                    <select name="customer_id" id="customer_id" onchange="toggleNewCustomerForm()" class="recipient-name" required>
+                    <select name="customer_id" id="customer_id" onchange="toggleNewCustomerForm()" class="recipient-name" required disabled>
                         <option value="">顧客を選択</option>
                         <?php foreach ($customers as $customer): ?>
                             <option value="<?php echo htmlspecialchars($customer['customer_id']); ?>"
@@ -91,11 +95,12 @@ $returnToCustomerChoiseFrom = 'order.php';
                                 <?php echo htmlspecialchars($customer['name']); ?> (ID: <?php echo htmlspecialchars($customer['customer_id']); ?>)
                             </option>
                         <?php endforeach; ?>
-                        
+
                     </select>
+                    <input type="hidden" name="customer_id" value="<?= htmlspecialchars($preselectedCustomerId) ?>">
                     <span>様</span>
                 </div>
-                
+
                 <div class="note">下記の通りにご注文申し上げます</div>
 
                 <table class="order-table">
@@ -109,124 +114,134 @@ $returnToCustomerChoiseFrom = 'order.php';
                         </tr>
                     </thead>
                     <tbody id="products">
-                        <tr>
-                            <td class="row-number">1</td>
-                            <td><input type="text" name="title[]" required></td>
-                            <td><input type="number" name="quantity[]" min="1" required></td>
-                            <td><input type="number" name="value[]" min="0" step="1" required></td>
-                            <td>
-                                <input type="text" name="description[]">
-                            </td>
-                            <td>
-                                <button type="button" class="removeRowBtn" style="margin-left:5px;">削除</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><textarea name="remarks" placeholder="備考欄"></textarea></td>
-                            <td>
-                                <div class="bottom-label">合計金額</div>
-                            </td>
-                            <td>
-                                <input type="number" name="total" readonly>
-                            </td>
-                            
-                        </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" class="align-right">合計</td>
+                            <td><span id="totalQuantity">0</span></td>
+                            <td><input type="number" name="total" readonly></td>
+                            <td><textarea name="remarks" placeholder="備考欄"></textarea></td>
+                        </tr>
+                    </tfoot>
                 </table>
-                <button type="button" id="addRowBtn" style="margin:10px 0 0 0;">＋ 商品を追加</button>
             </div>
-            </form>
+        </form>
     </main>
     <script>
-        window.onload = function() {
-            const customerSelect = document.getElementById('customer_id');
-            const preselectedId = '<?php echo $preselectedCustomerId; ?>';
-            if (preselectedId) {
-                customerSelect.value = preselectedId;
-            }
-            calcTotal(); 
-        };
-
-        function calcTotal() {
-            let total = 0;
-            const values = document.getElementsByName('value[]');
-            const quantities = document.getElementsByName('quantity[]');
-            for (let i = 0; i < values.length; i++) {
-                const v = parseFloat(values[i].value) || 0;
-                const q = parseInt(quantities[i].value) || 0;
-                total += v * q;
-            }
-            document.querySelector('input[name="total"]').value = total;
+    window.onload = function() {
+        const customerSelect = document.getElementById('customer_id');
+        const preselectedId = '<?php echo $preselectedCustomerId; ?>';
+        if (preselectedId) {
+            customerSelect.value = preselectedId;
         }
-
-        document.querySelectorAll('input[name="value[]"], input[name="quantity[]"]').forEach(el => {
-            el.addEventListener('input', calcTotal);
-        });
-
-        document.getElementById('addRowBtn').addEventListener('click', function() {
+        // 初期表示で10行追加
+        for (let i = 0; i < 10; i++) {
             const products = document.getElementById('products');
-            // 商品行（備考行以外）の数を取得
-            const productRows = products.querySelectorAll('tr .row-number').length;
-            if (productRows >= 15) {
-                alert('商品は最大15個まで追加できます。');
-                return;
-            }
-            const rows = products.querySelectorAll('tr');
-            const remarksRow = rows[rows.length - 1]; 
-            let rowNum = 1;
-            for (let i = 0; i < rows.length - 1; i++) {
-                const num = parseInt(rows[i].querySelector('.row-number')?.textContent);
-                if (!isNaN(num)) rowNum = num + 1;
-            }
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td class="row-number">${rowNum}</td>
-                <td><input type="text" name="title[]" required></td>
-                <td><input type="number" name="quantity[]" min="1" required></td>
-                <td><input type="number" name="value[]" min="0" step="1" required></td>
+                <td class="row-number">${i + 1}</td>
+                <td><input type="text" name="title[]"></td>
+                <td><input type="number" name="quantity[]" min="1"></td>
+                <td><input type="number" name="value[]" min="0" step="1"></td>
                 <td>
                     <input type="text" name="description[]">
                 </td>
-                <td>
-                    <button type="button" class="removeRowBtn" style="margin-left:5px;">削除</button>
-                </td>
             `;
-            products.insertBefore(tr, remarksRow);
+            products.appendChild(tr);
+            setupEventListeners(tr); // 新しい行にイベントリスナーを設定
+        }
+        updateRowNumbers(); // 初期ロード時にも行番号を更新
+        calcTotal();
+    };
 
-            tr.querySelectorAll('input[name="value[]"], input[name="quantity[]"]').forEach(el => {
-                el.addEventListener('input', calcTotal);
-            });
+    function calcTotal() {
+        let totalAmount = 0; // 合計金額
+        let totalQuantity = 0; // 合計数量
+        const values = document.getElementsByName('value[]');
+        const quantities = document.getElementsByName('quantity[]');
 
-            tr.querySelector('.removeRowBtn').addEventListener('click', function() {
-                tr.remove();
-                updateRowNumbers();
-                calcTotal();
-            });
+        for (let i = 0; i < values.length; i++) {
+            // 品名が入力されている行のみ計算対象とする
+            const titleInput = document.querySelectorAll('input[name="title[]"]')[i];
+            const titleValue = titleInput ? titleInput.value.trim() : '';
+
+            if (titleValue !== '') { // 品名がある場合のみ数量と単価をチェック
+                const v = parseFloat(values[i].value) || 0;
+                const q = parseInt(quantities[i].value) || 0;
+
+                totalAmount += v * q;
+                totalQuantity += q;
+            }
+        }
+        document.querySelector('input[name="total"]').value = totalAmount;
+        document.getElementById('totalQuantity').textContent = totalQuantity; // 合計数量を更新
+    }
+
+    function setupEventListeners(row) {
+        row.querySelectorAll('input[name="value[]"], input[name="quantity[]"], input[name="title[]"]').forEach(el => {
+            el.addEventListener('input', calcTotal);
         });
+    }
 
-        document.querySelectorAll('.removeRowBtn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const tr = btn.closest('tr');
-                tr.remove();
-                updateRowNumbers();
-                calcTotal();
-            });
+    function updateRowNumbers() {
+        const rows = document.querySelectorAll('#products tr');
+        let num = 1;
+        rows.forEach(row => {
+            const rowNumberCell = row.querySelector('.row-number');
+            if (rowNumberCell) {
+                rowNumberCell.textContent = num++;
+            }
         });
+    }
 
-        function updateRowNumbers() {
-            const rows = document.querySelectorAll('#products .row-number');
-            let num = 1;
-            rows.forEach(row => {
-                row.textContent = num++;
-            });
+    document.getElementById('saveOrderBtn').addEventListener('click', function() {
+        const productsTable = document.getElementById('products');
+        const rows = productsTable.querySelectorAll('tr');
+
+        const rowsToRemove = [];
+        let validationError = false;
+
+        // 顧客選択のバリデーション
+        const customerSelect = document.getElementById('customer_id');
+        if (customerSelect.value === "") {
+            alert('顧客を選択してください。');
+            return;
         }
 
-        // ヘッダーの保存ボタンがクリックされたら、メインのフォームを送信
-        document.getElementById('saveOrderBtn').addEventListener('click', function() {
-            document.getElementById('orderForm').requestSubmit(); 
+        rows.forEach((row, index) => {
+            const titleInput = row.querySelector('input[name="title[]"]');
+            const quantityInput = row.querySelector('input[name="quantity[]"]');
+            const valueInput = row.querySelector('input[name="value[]"]');
+
+            const titleValue = titleInput ? titleInput.value.trim() : '';
+            const quantityValue = quantityInput ? quantityInput.value.trim() : '';
+            const valueValue = valueInput ? valueInput.value.trim() : '';
+
+            // 品名が入力されていて、数量または単価が空の場合にエラー
+            if (titleValue !== '' && (quantityValue === '' || valueValue === '')) {
+                alert(`${index + 1}行目の品名が入力されていますが、数量または単価が未入力です。`);
+                validationError = true;
+                return;
+            }
+
+            // 全ての入力フィールドが空の場合、その行を削除対象とする
+            if (titleValue === '' && quantityValue === '' && valueValue === '') {
+                rowsToRemove.push(row);
+            }
         });
 
-    </script>
+        if (validationError) {
+            return;
+        }
+
+        rowsToRemove.forEach(row => row.remove());
+
+        updateRowNumbers();
+        calcTotal();
+
+        document.getElementById('orderForm').requestSubmit();
+    });
+</script>
 </body>
+
 </html>
