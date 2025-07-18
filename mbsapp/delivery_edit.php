@@ -146,8 +146,8 @@ $details = $stmt_details->fetchAll();
                     <tr>
                         <th></th>
                         <th>品名</th>
-                        <th>数量</th>
                         <th>単価</th>
+                        <th>数量</th>
                         <th>金額（税込）</th>
                     </tr>
                 </thead>
@@ -170,40 +170,19 @@ $details = $stmt_details->fetchAll();
                             <input type="hidden" name="detail_id[<?= $i ?>]" value="<?= htmlspecialchars($d['deliverydetail_ID']) ?>">
                         </td>
                         <td><?= htmlspecialchars($d['title'] ?? '') ?></td>
+                        <td><?= $value ?></td>
                         <td>
                             <input type="number" name="quantity[<?= $i ?>]" value="<?= $qty ?>" min="0" style="width:60px;">
                         </td>
-                        <td><?= $value ?></td>
                         <td class="row-total"><?= $total ?></td>
                     </tr>
                     <?php endforeach; ?>
                     <!-- 合計行 -->
                     <tr>
                         <td></td>
-                        <td class="bold">合計</td>
+                        <td class="bold" colspan="2">合計</td>
                         <td><input type="number" id="sum_qty" value="<?= $sum_qty ?>" readonly></td>
-                        <td><input type="number" id="sum_value" value="<?= $sum_value ?>" readonly></td>
                         <td><input type="number" id="sum_total" value="<?= $sum_total ?>" readonly></td>
-                    </tr>
-                    <!-- 税率・消費税額 -->
-                    <tr>
-                        <td></td>
-                        <td class="bottom-label">税率（％）</td>
-                        <td>
-                            <input type="number" id="tax_rate" name="tax_rate" value="10" min="0" max="100" style="width: 100%;">
-                        </td>
-                        <td class="bottom-label">消費税額</td>
-                        <td>
-                            <input type="number" id="tax_amount" name="tax_amount" value="<?= floor($sum_total * 0.1) ?>" readonly style="width: 100%;">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td class="bottom-label">税込合計金額</td>
-                        <td colspan="1">
-                            <input type="number" id="total_with_tax" value="<?= $sum_total + floor($sum_total * 0.1) ?>" readonly style="width: 100%;">
-                        </td>
                     </tr>
                 </tbody>
             </table>
