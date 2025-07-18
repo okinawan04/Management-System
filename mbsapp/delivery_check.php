@@ -47,6 +47,12 @@ $stmt_details = $pdo->prepare($sql_details);
 $stmt_details->execute([$delivery['deliverys_ID']]);
 $details = $stmt_details->fetchAll();
 
+// 合計数量を計算
+$totalQuantity = 0;
+foreach ($details as $detail) {
+    $totalQuantity += $detail['quantity'];
+}
+
 $total = 0;
 foreach ($details as $d) {
     $total += ($d['quantity'] ?? 0) * ($d['value'] ?? 0);
@@ -131,8 +137,8 @@ foreach ($details as $d) {
                     <tr>
                         <td></td>
                         <td class="bold">合計</td>
-                        <td></td>
-                        <td></td>
+                        <td><?= htmlspecialchars($totalQuantity) ?></td> <!-- 合計数量 --> 
+                        <td></td> <!-- 合計単価 -->
                         <td><input type="text" value="<?= number_format($total) ?>" readonly></td>
                     </tr>
                 </tbody>
