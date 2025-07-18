@@ -83,7 +83,7 @@ $returnToCustomerChoiseFrom = 'order.php';
                 </div>
 
                 <div class="recipient">
-                    <select name="customer_id" id="customer_id" onchange="toggleNewCustomerForm()" class="recipient-name" required>
+                    <select name="customer_id" id="customer_id" onchange="toggleNewCustomerForm()" class="recipient-name" required disabled>
                         <option value="">顧客を選択</option>
                         <?php foreach ($customers as $customer): ?>
                             <option value="<?php echo htmlspecialchars($customer['customer_id']); ?>"
@@ -93,6 +93,7 @@ $returnToCustomerChoiseFrom = 'order.php';
                         <?php endforeach; ?>
                         
                     </select>
+                    <input type="hidden" name="customer_id" value="<?= htmlspecialchars($preselectedCustomerId) ?>">
                     <span>様</span>
                 </div>
                 
