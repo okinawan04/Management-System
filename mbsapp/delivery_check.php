@@ -85,7 +85,7 @@ foreach ($details as $d) {
             <div class="subtitle">納品書確認</div>
         </div>
         <div class="header-buttons">
-
+            <button class="header-btn" id="printButton">印刷</button>
             <a href="delivery_edit.php?no=<?= $delivery_id ?>&selected_store=<?= htmlspecialchars($selectedStore) ?>" class="header-btn delivery_edit">編集</a>
             <button class="header-btn" id="deleteButton">削除</button>
             <form id="deletedeliveryForm" action="delivery_delete.php" method="POST" style="display:none;">
@@ -119,9 +119,9 @@ foreach ($details as $d) {
                     <tr>
                         <th></th>
                         <th>品名</th>
-                        <th>数量</th>
                         <th>単価</th>
-                        <th>金額（税込）</th>
+                        <th>数量</th>
+                        <th>金額</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -129,11 +129,12 @@ foreach ($details as $d) {
                         <tr>
                             <td class="row-number"><?= $i + 1 ?></td>
                             <td><?= htmlspecialchars($d['title'] ?? '') ?></td>
-                            <td><?= htmlspecialchars($d['quantity'] ?? '') ?></td>
                             <td><?= htmlspecialchars($d['value'] ?? '') ?></td>
+                            <td><?= htmlspecialchars($d['quantity'] ?? '') ?></td>
                             <td><?= number_format(($d['quantity'] ?? 0) * ($d['value'] ?? 0)) ?></td>
                         </tr>
                     <?php endforeach; ?>
+                    <!-- 合計行 -->
                     <tr>
                         <td></td>
                         <td class="bold">合計</td>
@@ -146,6 +147,12 @@ foreach ($details as $d) {
         </div>
     </main>
     <script>
+        // 印刷ボタン処理
+        document.getElementById("printButton").addEventListener("click", function() {
+            window.print();
+        });
+
+        // 削除ボタン処理
         document.getElementById('deleteButton').addEventListener('click', function() {
             if (confirm('本当にこの納品書を削除しますか？\nこの操作は元に戻せません。')) {
                 document.getElementById('deletedeliveryForm').submit();

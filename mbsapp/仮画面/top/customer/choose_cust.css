@@ -4,7 +4,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #D3D3D3;
 }
-
+ 
 /* ヘッダー全体の基本スタイル */
 header {
     background-color: #D3D3D3;
@@ -14,27 +14,27 @@ header {
     align-items: center;
     border-bottom: 1px solid #000
 }
-
+ 
 /* ロゴ */
 .logo {
     font-weight: bold;
     font-size: 1.5rem;
     color: #000000;
 }
-
+ 
 /* サブタイトル（顧客選択） */
 .subtitle {
     font-size: 1rem;
     font-weight: bold;
     color: #000000;
 }
-
+ 
 /* ヘッダーボタンのコンテナ */
 .header-buttons {
     display: flex;
     gap: 10px;
 }
-
+ 
 /* ヘッダーボタン */
 .header-btn {
     background-color: #ffffff;
@@ -48,16 +48,16 @@ header {
     box-shadow: 0 4px #999;
     transition: all 0.1s ease-in-out;
 }
-
+ 
 .header-btn:hover {
     background-color: #f9f9f9;
 }
-
+ 
 .header-btn:active {
     box-shadow: 0 2px #666;
     transform: translateY(2px);
 }
-
+ 
 /* 検索操作部のコンテナ */
 .control-panel {
     display: flex;
@@ -65,7 +65,7 @@ header {
     gap: 15px;
     padding: 1rem 2rem;
 }
-
+ 
 /* テキスト検索ボックス */
 .search-box {
     padding: 0.5rem;
@@ -74,7 +74,7 @@ header {
     border-radius: 4px;
     width: 200px;
 }
-
+ 
 /* ボタン（検索）*/
 .search-btn {
     padding: 0.5rem 1rem;
@@ -88,16 +88,16 @@ header {
     box-shadow: 0 4px #999;
     transition: all 0.1s ease-in-out;
 }
-
+ 
 .search-btn:hover {
     background-color: #f5f5f5;
 }
-
+ 
 .search-btn:active {
     box-shadow: 0 2px #666;
     transform: translateY(2px);
 }
-
+ 
 /* 小さいボタン（No用） */
 .no-btn {
     font-size: 12px;
@@ -109,16 +109,16 @@ header {
     box-shadow: 0 3px #aaa;
     transition: all 0.1s ease-in-out;
 }
-
+ 
 .no-btn:hover {
     background-color: #ffffff;
 }
-
+ 
 .no-btn:active {
     box-shadow: 0 1px #666;
     transform: translateY(2px);
 }
-
+ 
 /* テーブルを囲むエリア */
 .table-container {
     background-color: #ffffff;
@@ -128,84 +128,79 @@ header {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     overflow-x: auto;
     overflow-y: auto;
-    max-height: 500px; 
+    max-height: 500px;
 }
-
+ 
 /* テーブル全体のスタイル */
 table {
     width: 100%;
-    border-collapse: collapse; 
-    border: 2px solid #000000; 
+    border-collapse: collapse;
+    border: 2px solid #000000;
     table-layout: fixed;
 }
-
+ 
 /* 表のセル（ヘッダー・データ共通） */
 th, td {
     padding: 0;
     text-align: center;
-    border: 1px solid #000000; 
-    height: 60px; 
+    border: 1px solid #000000;
+    height: 60px;
     vertical-align: middle;
 }
-
+ 
 /* ヘッダー行背景色 */
 th {
     background-color: #f0f0f0;
 }
-
+ 
 /* 各列の幅指定 */
 /* No.列 */
-.order-table th:nth-child(1),
-.order-table td:nth-child(1) {
-    width: 39px; 
+.customer-table th:nth-child(1),
+.customer-table td:nth-child(1) {
+    width: 88px;
 }
 /* 顧客名列 */
-.order-table th:nth-child(2),
-.order-table td:nth-child(2) {
-    width: 150px; 
+.customer-table th:nth-child(2),
+.customer-table td:nth-child(2) {
+    width: 440px;
 }
 /* 電話番号列 */
-.order-table th:nth-child(3),
-.order-table td:nth-child(3) {
-    width: 100px; 
+.customer-table th:nth-child(3),
+.customer-table td:nth-child(3) {
+    width: 250px;
 }
-/* リードタイム列 */
-.order-table th:nth-child(4),
-.order-table td:nth-child(4) {
-    width: 100px; 
+/* 住所列*/
+.customer-table th:nth-child(4),
+.customer-table td:nth-child(4) {
+    width: 600px;
 }
-/* 売上列 */
-.order-table th:nth-child(5),
-.order-table td:nth-child(5) {
-    width: 120px; 
-}
-
+ 
 /* テーブル内の入力フォーム共通 */
-.order-table input[type="text"],
-.order-table input[type="number"],
-.order-table textarea {
+.customer-table input[type="text"],
+.customer-table input[type="number"],
+.customer-table textarea {
     width: 100%;
     height: 100%;
     min-height: 60px;
     padding: 0.5rem;
     box-sizing: border-box;
-    border: none; 
+    border: none;
 }
-
+ 
 @media (max-width: 768px) {
   .control-panel {
     flex-direction: column;
     align-items: flex-start;
   }
-
+ 
   .table-container {
     overflow-x: auto;
   }
-
-  table.order-table {
-    min-width: 600px; 
+ 
+  table.customer-table {
+    min-width: 600px;
   }
-
+ 
   .search-box {
     width: 100%;
   }
