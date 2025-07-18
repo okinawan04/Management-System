@@ -133,8 +133,9 @@ if (!empty($selectedStore)) {
                     <tr>
                         <th class="nocol">No</th>
                         <th>顧客名</th>
-                        <th>合計購入金額 (円)</th>
+                        <th>電話番号</th>
                         <th>平均リードタイム (日)</th>
+                        <th>売上 (円)</th>
                     </tr>
                 </thead>
                 <tbody id="customerTbody">
@@ -151,10 +152,11 @@ if (!empty($selectedStore)) {
                                     <?= htmlspecialchars($customer['title'] ?? '') ?>
                                 </span>
                             </td>
-                            <td><?= number_format($customer['total_amount']); ?></td>
+                            <td></td>
                             <td>
                                 <?= number_format($customer['avg_lead_time'] ?? 0, 2); ?>
                             </td>
+                            <td><?= number_format($customer['total_amount']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
