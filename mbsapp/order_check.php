@@ -137,10 +137,10 @@ if (!$order) {
 
                     <tr>
                         <td></td>
-                        <td colspan="1"></td>
                         <td>
-                            <div class="bottom-label">合計金額</div>
+                            <div class="bottom-label">合計</div>
                         </td>
+                        <td></td>
                         <td>
                             <input type="text" value="<?= number_format($order['total']) ?>" readonly>
                         </td>
