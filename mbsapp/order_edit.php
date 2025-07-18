@@ -130,7 +130,7 @@ if (!$order) {
 <head>
     <meta charset="UTF-8">
     <title>注文書編集画面</title>
-    <link rel="stylesheet" href="仮画面/top/order/order_form.css">
+    <link rel="stylesheet" href="仮画面/top/order/order_edit.css">
 </head>
 
 <body>
@@ -160,13 +160,12 @@ if (!$order) {
             <div class="subtitle">注文書編集画面</div>
         </div>
         <div class="header-buttons">
+            <button class="header-btn" type="submit" form="editOrderForm">保存</button>
             <form id="backForm" action="order_check.php" method="POST" style="display:inline;">
                 <input type="hidden" name="no" value="<?= htmlspecialchars($order_id) ?>">
                 <input type="hidden" name="selected_store" value="<?= htmlspecialchars((string)$selectedStore) ?>">
                 <button class="header-btn" type="submit">戻る</button>
             </form>
-            
-            <button class="header-btn" type="submit" form="editOrderForm">保存</button>
         </div>
     </header>
 

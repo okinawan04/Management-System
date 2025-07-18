@@ -61,9 +61,7 @@ $returnToCustomerChoiseFrom = 'order.php';
             <div class="subtitle">注文書作成</div>
         </div>
         <div class="header-buttons">
-
-            <button id="saveOrderBtn" class="header-btn" type="button">保存</button>
-
+            <button id="saveOrderBtn" class="header-btn" type="button">保存</button> 
             <form id="backToCustomerChoiseForm" action="<?= htmlspecialchars($backButtonAction) ?>" method="POST" style="display:inline;">
                 <?php if ($sourceListPage): ?>
                     <input type="hidden" name="from" value="<?= htmlspecialchars($backButtonFromPage) ?>">
@@ -71,8 +69,6 @@ $returnToCustomerChoiseFrom = 'order.php';
                 <?php endif; ?>
                 <button class="header-btn" type="submit">戻る</button>
             </form>
-
-             
         </div>
     </header>
 

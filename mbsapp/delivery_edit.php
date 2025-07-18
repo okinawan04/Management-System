@@ -107,7 +107,7 @@ $details = $stmt_details->fetchAll();
 <head>
     <meta charset="UTF-8">
     <title>納品書編集</title>
-    <link rel="stylesheet" href="仮画面/top/delivery/delivery_form.css">
+    <link rel="stylesheet" href="仮画面/top/delivery/delivery_edit.css">
 </head>
 <body>
 <header>
@@ -116,12 +116,12 @@ $details = $stmt_details->fetchAll();
         <div class="subtitle">納品書編集</div>
     </div>
     <div class="header-buttons">
+         <button class="header-btn" type="submit" form="editDeliveryForm">保存</button>
         <form action="delivery_check.php" method="GET" style="display:inline;">
             <input type="hidden" name="no" value="<?= htmlspecialchars($delivery_id) ?>">
             <input type="hidden" name="selected_store" value="<?= htmlspecialchars($selectedStore) ?>">
             <button class="header-btn" type="submit">戻る</button>
         </form>
-        <button class="header-btn" type="submit" form="editDeliveryForm">保存</button>
     </div>
 </header>
 <main>

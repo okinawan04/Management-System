@@ -114,7 +114,7 @@ if ($selected_id && !$selectedStore) {
 ?>
 <!DOCTYPE html>
 <html lang="ja">
-
+  
 <head>
     <meta charset="UTF-8">
     <title>納品書作成</title>
@@ -131,14 +131,13 @@ if ($selected_id && !$selectedStore) {
         </div>
         <div class="header-buttons">
             <input type="submit" form="deliveryForm" class="header-btn" name="deliver" value="保存">
-            
+
             <form action="customer_choise.php" method="post" style="display:inline;">
                 <input type="hidden" name="selected_store" value="<?= htmlspecialchars($selectedStore) ?>">
                 <input type="hidden" name="from" value="<?= htmlspecialchars($source_list_page) ?>">
                 <input type="hidden" name="customer_id" value="<?= htmlspecialchars($selected_id) ?>">
                 <button class="header-btn" type="submit">戻る</button>
             </form>
-            
         </div>
     </header>
 
@@ -149,7 +148,6 @@ if ($selected_id && !$selectedStore) {
             </div>
             <form id="deliveryForm" method="post">
                 <input type="hidden" name="selected_store" value="<?= htmlspecialchars((string)$selectedStore) ?>">
-
                 <div class="recipient">
                     <select name="customer_id" id="customer_id" class="recipient-name" required
                         onchange="document.getElementById('deliveryForm').submit();">
@@ -172,10 +170,9 @@ if ($selected_id && !$selectedStore) {
                         <tr>
                             <th></th>
                             <th>品名</th>
-                            <th>数量</th>
                             <th>単価</th>
+                            <th>数量</th>
                             <th>金額（税込）</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -199,7 +196,6 @@ if ($selected_id && !$selectedStore) {
                         ?>
                         <?php
                         $sum_qty = 0;
-                        $sum_value = 0;
                         $sum_total = 0;
                         if ($rows):
                             $i = 1;
@@ -222,17 +218,15 @@ if ($selected_id && !$selectedStore) {
                                         <?= htmlspecialchars($row['title']) ?>
                                         <input type="hidden" name="order_detail_ids[]" value="<?= $row['orderdetail_ID'] ?>">
                                     </td>
+                                    <td><?= $row['value'] ?></td>
                                     <td>
                                         <input type="number" name="quantities[]" value="<?= $remain_qty ?>" min="1" max="<?= $remain_qty ?>" style="width:60px;">
                                         <span style="font-size:12px;color:#888;">(残:<?= $remain_qty ?>)</span>
                                     </td>
-                                    <td><?= $row['value'] ?></td>
                                     <td><?= $row['value'] * $remain_qty ?></td>
-
                                 </tr>
                             <?php
                                 $sum_qty += $remain_qty;
-                                $sum_value += $row['value'];
                                 $sum_total += $row['value'] * $remain_qty;
                                 $i++;
                             endforeach;
@@ -246,36 +240,12 @@ if ($selected_id && !$selectedStore) {
                         <tr>
                             <td></td>
                             <td class="bold">合計</td>
-                            <td><input type="number" id="sum_qty" value="<?= $sum_qty ?>" readonly></td>
-                            <td><input type="number" id="sum_value" value="<?= $sum_value ?>" readonly></td>
+                             <td></td>
+                             <td><input type="number" id="sum_qty" value="<?= $sum_qty ?>" readonly></td>
                             <td><input type="number" id="sum_total" value="<?= $sum_total ?>" readonly></td>
-
-                        </tr>
-                        <!-- 税率・消費税額 -->
-                        <tr>
-                            <td></td>
-                            <td class="bottom-label">税率（％）</td>
-                            <td>
-                                <input type="number" id="tax_rate" name="tax_rate" value="10" min="0" max="100" style="width: 100%;">
-                            </td>
-                            <td class="bottom-label">消費税額</td>
-                            <td>
-                                <input type="number" id="tax_amount" name="tax_amount" value="<?= floor($sum_total * 0.1) ?>" readonly style="width: 100%;">
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="bottom-label">税込合計金額</td>
-                            <td colspan="1">
-                                <input type="number" id="total_with_tax" value="<?= $sum_total + floor($sum_total * 0.1) ?>" readonly style="width: 100%;">
-                            </td>
                         </tr>
                     </tbody>
                 </table>
-                
             </form>
         </div>
     </main>
@@ -285,8 +255,6 @@ if ($selected_id && !$selectedStore) {
     <script>
         // 税率変更時に再計算
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('tax_rate').addEventListener('input', recalcTotals);
-
             // 数量変更時にも再計算
             document.querySelectorAll('.delivery-table tbody input[name="quantities[]"]').forEach(function(input) {
                 input.addEventListener('input', recalcTotals);
@@ -295,33 +263,24 @@ if ($selected_id && !$selectedStore) {
             // 合計・税額・税込合計を再計算
             function recalcTotals() {
                 let sum_qty = 0;
-                let sum_value = 0;
                 let sum_total = 0;
                 // 明細行を再取得
                 document.querySelectorAll('.delivery-table tbody tr').forEach(function(row) {
                     if (!row.querySelector('.row-number')) return;
                     const cells = row.querySelectorAll('td');
-                    if (cells.length < 6) return;
+                    if (cells.length < 5) return;
                     // 数量はinputから取得
                     const qtyInput = cells[2].querySelector('input[type="number"]');
                     const qty = qtyInput ? parseInt(qtyInput.value) || 0 : 0;
                     const value = parseInt(cells[3].textContent) || 0;
                     const total = value * qty;
                     sum_qty += qty;
-                    sum_value += value;
                     sum_total += total;
                     // 金額セルも更新
                     cells[4].textContent = total;
                 });
                 document.getElementById('sum_qty').value = sum_qty;
-                document.getElementById('sum_value').value = sum_value;
                 document.getElementById('sum_total').value = sum_total;
-
-                // 税率・税額・税込合計
-                const taxRate = parseFloat(document.getElementById('tax_rate').value) || 0;
-                const taxAmount = Math.floor(sum_total * (taxRate / 100));
-                document.getElementById('tax_amount').value = taxAmount;
-                document.getElementById('total_with_tax').value = sum_total + taxAmount;
             }
         });
     </script>
