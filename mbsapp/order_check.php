@@ -63,7 +63,7 @@ if (!$order) {
 <head>
     <meta charset="UTF-8">
     <title>注文書確認画面</title>
-    <link rel="stylesheet" href="仮画面/top/order/order_form.css">
+    <link rel="stylesheet" href="仮画面/top/order/order_check.css">
 </head>
 
 <body>
@@ -83,8 +83,7 @@ if (!$order) {
             <div class="subtitle">注文書確認画面</div>
         </div>
         <div class="header-buttons">
-                
-            
+            <!-- 編集・削除ボタン等は必要に応じて -->
              <a href="order_edit.php?no=<?= $order_id ?>&selected_store=<?= htmlspecialchars($selectedStore) ?>" class="header-btn order_edit">編集</a>
              
              <button class="header-btn" id="deleteButton">削除</button>
@@ -92,12 +91,10 @@ if (!$order) {
                 <input type="hidden" name="order_id" value="<?= htmlspecialchars($order_id) ?>">
                 <input type="hidden" name="selected_store" value="<?= htmlspecialchars($selectedStore) ?>">
             </form>
-
             <form id="backToOrderListForm" action="order_list.php" method="POST" style="display:inline;">
                     <input type="hidden" name="selected_store" value="<?= htmlspecialchars($selectedStore) ?>">
                     <button class="header-btn" type="submit">戻る</button>
             </form>
-
         </div>
     </header>
 
