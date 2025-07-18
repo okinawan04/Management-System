@@ -113,9 +113,9 @@ foreach ($details as $d) {
                     <tr>
                         <th></th>
                         <th>品名</th>
-                        <th>数量</th>
                         <th>単価</th>
-                        <th>金額（税込）</th>
+                        <th>数量</th>
+                        <th>金額</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -123,17 +123,19 @@ foreach ($details as $d) {
                         <tr>
                             <td class="row-number"><?= $i + 1 ?></td>
                             <td><?= htmlspecialchars($d['title'] ?? '') ?></td>
-                            <td><?= htmlspecialchars($d['quantity'] ?? '') ?></td>
                             <td><?= htmlspecialchars($d['value'] ?? '') ?></td>
+                            <td><?= htmlspecialchars($d['quantity'] ?? '') ?></td>
                             <td><?= number_format(($d['quantity'] ?? 0) * ($d['value'] ?? 0)) ?></td>
                         </tr>
                     <?php endforeach; ?>
+                    <!-- 合計行 -->
                     <tr>
                         <td></td>
-                        <td class="bold">合計</td>
+                        <td class="bold" colspan="2">
+                            合計
+                        </td>
                         <td></td>
-                        <td></td>
-                        <td><input type="text" value="<?= number_format($total) ?>" readonly></td>
+                        <td>￥</td>
                     </tr>
                 </tbody>
             </table>
