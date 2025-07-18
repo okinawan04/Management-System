@@ -151,7 +151,7 @@ if (isset($_GET['customer_id']) && !empty($_GET['customer_id'])) {
                             <thead>
                                 <tr>
                                     <th>注文書番号</th>
-                                    <th>合計金額</th>
+                                    <th>合計金額 （円）</th>
                                     <th>注文日</th>
                                     <th>届け日</th>
                                     <th>リードタイム</th>
