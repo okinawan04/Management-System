@@ -84,6 +84,7 @@ if (!$order) {
         </div>
         <div class="header-buttons">
             <!-- 編集・削除ボタン等は必要に応じて -->
+             <button class="header-btn" id="printButton">印刷</button>
              <a href="order_edit.php?no=<?= $order_id ?>&selected_store=<?= htmlspecialchars($selectedStore) ?>" class="header-btn order_edit">編集</a>
              
              <button class="header-btn" id="deleteButton">削除</button>
@@ -149,6 +150,12 @@ if (!$order) {
         </div>
     </main>
     <script>
+        // 印刷ボタン処理
+        document.getElementById("printButton").addEventListener("click", function() {
+            window.print();
+        });
+
+        // 削除ボタン処理
         document.getElementById('deleteButton').addEventListener('click', function() {
             if (confirm('本当にこの注文書を削除しますか？\nこの操作は元に戻せません。')) {
                 document.getElementById('deleteOrderForm').submit();
