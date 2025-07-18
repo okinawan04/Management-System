@@ -103,7 +103,8 @@ header {
  
 /* 顧客名入力欄 */
 .recipient-name {
-    font-size: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
     padding: 0.3rem;
     width: 200px;
     margin-right: 0.5rem;

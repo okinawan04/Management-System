@@ -149,18 +149,19 @@ if ($selected_id && !$selectedStore) {
             <form id="deliveryForm" method="post">
                 <input type="hidden" name="selected_store" value="<?= htmlspecialchars((string)$selectedStore) ?>">
                 <div class="recipient">
-                    <select name="customer_id" id="customer_id" class="recipient-name" required
-                        onchange="document.getElementById('deliveryForm').submit();">
-                        <option value="">顧客を選択</option>
-                        <?php
+                    <?php
                         $customers = $pdo->query("SELECT customer_ID, name FROM customer")->fetchAll();
                         $selected_id = $_POST['customer_id'] ?? $_GET['customer_id'] ?? '';
+                        $customer_name = '';
                         foreach ($customers as $c) {
-                            $selected = ($selected_id == $c['customer_ID']) ? 'selected' : '';
-                            echo "<option value=\"{$c['customer_ID']}\" $selected>{$c['name']}</option>";
+                            if ($selected_id == $c['customer_ID']) {
+                                $customer_name = $c['name'];
+                                break;
+                            }
                         }
-                        ?>
-                    </select>
+                    ?>
+                    <span class="recipient-name"><?= htmlspecialchars($customer_name) ?></span>
+                    <input type="hidden" name="customer_id" value="<?= htmlspecialchars($selected_id) ?>">
                     <span>様</span>
                 </div>
                 <div class="note">下記の通り納品いたしました</div>
