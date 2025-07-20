@@ -56,6 +56,12 @@ if (!$order) {
     exit;
 }
 
+// 合計数量を計算
+$totalQuantity = 0;
+foreach ($details as $detail) {
+    $totalQuantity += $detail['quantity'];
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -140,7 +146,10 @@ if (!$order) {
                         <td>
                             <div class="bottom-label">合計</div>
                         </td>
-                        <td></td>
+                        <!-- 合計数量 -->
+                        <td>
+                            <?= htmlspecialchars($totalQuantity) ?>
+                        </td> 
                         <td>
                             <input type="text" value="<?= number_format($order['total']) ?>" readonly>
                         </td>
