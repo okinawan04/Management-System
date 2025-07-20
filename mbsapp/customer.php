@@ -38,6 +38,7 @@ if (!empty($selectedStore)) {
     $sql = "
         SELECT
             c.customer_ID,
+            c.phoneNo AS phone,
             c.chargeName,
             c.name AS customer_name,
             GROUP_CONCAT(od.title SEPARATOR ', ') AS title,
@@ -152,7 +153,9 @@ if (!empty($selectedStore)) {
                                     <?= htmlspecialchars($customer['title'] ?? '') ?>
                                 </span>
                             </td>
-                            <td></td>
+                            <td><!-- 電話番号 -->
+                                <?= htmlspecialchars($customer['phone'] ?? '未登録', ENT_QUOTES, 'UTF-8'); ?>
+                            </td>
                             <td>
                                 <?= number_format($customer['avg_lead_time'] ?? 0, 2); ?>
                             </td>
