@@ -117,7 +117,8 @@ $returnToCustomerChoiseFrom = 'order.php';
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="2" class="align-right">合計</td>
+                            <td></td>
+                            <td class="bold">合計</td>
                             <td><span id="totalQuantity">0</span></td>
                             <td><input type="number" name="total" readonly></td>
                             <td><textarea name="remarks" placeholder="備考欄"></textarea></td>

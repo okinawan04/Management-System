@@ -10,7 +10,7 @@
 ## 主に使うgitコマンド
 - gitpull (ローカルのmainブランチを最新に)
 - git merge origin/main(最新のmainブランチを自分のブランチに適用(自分のブランチで入力するよう気を付ける))
-- git branch(新しくブランチをつくる)
+- git branch(新しくブランチをつくる(mainで行うように))
 
 ## 🚀 主な機能
 
