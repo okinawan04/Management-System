@@ -164,7 +164,7 @@ if (!empty($selectedStore)) {
                     </tr>
                 </thead>
                 <tbody id="orderTbody">
-                    <?php foreach ($orders as $order): ?>
+                    <?php foreach ($orders as $order): $currencyMark = '￥'; ?>
                         <tr>
                             <td class="nocol">
                                 <a href="order_check.php?no=<?= htmlspecialchars($order['orders_ID']) ?>&selected_store=<?= htmlspecialchars($selectedStore) ?>">
@@ -173,7 +173,7 @@ if (!empty($selectedStore)) {
                             </td>
                             <td><?= htmlspecialchars($order['customer_name'] ?? '') ?></td>
                             <td><?= htmlspecialchars($order['charge'] ?? '') ?></td>
-                            <td><?= number_format(isset($order['total']) ? $order['total'] : 0) ?></td>
+                            <td><?= $currencyMark . number_format(isset($order['total']) ? $order['total'] : 0) ?></td>
                             <td><?= htmlspecialchars($order['orderday'] ?? '') ?></td>
                             <td><?= htmlspecialchars($order['order_status'] ?? '') ?></td>
                         </tr>

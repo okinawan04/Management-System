@@ -145,7 +145,7 @@ if (!empty($selectedStore)) {
                     </tr>
                 </thead>
                 <tbody id="deliveryTbody">
-                    <?php foreach ($deliverys as $delivery): ?>
+                    <?php foreach ($deliverys as $delivery): $currencyMark = '￥'; ?>
                         <tr>
                             <td class="nocol">
                                 <a href="delivery_check.php?no=<?= htmlspecialchars($delivery['deliverys_ID']) ?>&selected_store=<?= htmlspecialchars($selectedStore) ?>">
@@ -154,7 +154,7 @@ if (!empty($selectedStore)) {
                             </td>
                             <td><?= htmlspecialchars($delivery['customer_name'] ?? '') ?></td>
                             <td><?= htmlspecialchars($delivery['charge'] ?? '') ?></td>
-                            <td><?= number_format(isset($delivery['total']) ? $delivery['total'] : 0) ?></td>
+                            <td><?= $currencyMark . number_format(isset($delivery['total']) ? $delivery['total'] : 0) ?></td>
                             <td><?= htmlspecialchars($delivery['deliveryday'] ?? '') ?></td>
                         </tr>
                     <?php endforeach; ?>

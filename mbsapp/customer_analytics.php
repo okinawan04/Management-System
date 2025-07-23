@@ -28,7 +28,7 @@ if (isset($_GET['customer_id']) && !empty($_GET['customer_id'])) {
 
         // --- 顧客詳細情報の取得 ---
         // 'customer' テーブルから customer_ID に基づいて情報を取得
-        // 必要に応じて SELECT するカラムを調整してください
+        
         $stmt = $pdo->prepare("SELECT * FROM customer WHERE customer_ID = ?");
         $stmt->execute([$customer_id]);
         $customerDetails = $stmt->fetch(PDO::FETCH_ASSOC); // 連想配列として結果を取得
@@ -159,10 +159,10 @@ if (isset($_GET['customer_id']) && !empty($_GET['customer_id'])) {
                             </thead>
                             <tbody>
                                 <?php if (!empty($customerOrders)): // 注文履歴がある場合、一覧表示 ?>
-                                    <?php foreach ($customerOrders as $order): ?>
+                                    <?php foreach ($customerOrders as $order): $currencyMark = '￥'; ?>
                                         <tr>
                                             <td><?= htmlspecialchars($order['orders_ID'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
-                                            <td><?= number_format($order['total'] ?? 0); ?></td>
+                                            <td><?=  $currencyMark . number_format($order['total'] ?? 0); ?></td>
                                             <td><?= htmlspecialchars($order['orderday'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
                                             <td><?= htmlspecialchars($order['deliveryday'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
                                             <td><?= htmlspecialchars($order['lead_time'] ?? '', ENT_QUOTES, 'UTF-8'); ?>日間</td>
