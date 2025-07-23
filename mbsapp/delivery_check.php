@@ -137,9 +137,8 @@ foreach ($details as $d) {
                     <!-- 合計行 -->
                     <tr>
                         <td></td>
-                        <td class="bold">合計</td>
-                        <td><?= htmlspecialchars($totalQuantity) ?></td> <!-- 合計数量 --> 
-                        <td></td> <!-- 合計単価 -->
+                        <td class="bold" colspan="2">合計</td>
+                        <td><?= htmlspecialchars($totalQuantity) ?></td> <!-- 合計数量 -->
                         <td><input type="text" value="<?= number_format($total) ?>" readonly></td>
                     </tr>
                 </tbody>
