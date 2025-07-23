@@ -158,7 +158,7 @@ foreach ($details as $detail) {
                         </td>
                         <td></td> <!-- 摘要 -->
                         <td><!-- 備考の表示 -->
-                            <input type="textarea" value ="<?= htmlspecialchars($order['remark']) ?? '' ?>">
+                            <input type="textarea" value ="<?= htmlspecialchars($order['remark']) ?? '' ?>" readonly>
                         </td>
                     </tr>
                 </tbody>
