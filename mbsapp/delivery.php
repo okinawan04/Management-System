@@ -198,6 +198,7 @@ if ($selected_id && !$selectedStore) {
                         <?php
                         $sum_qty = 0;
                         $sum_total = 0;
+                        
                         if ($rows):
                             $i = 1;
                             foreach ($rows as $row):
@@ -219,7 +220,7 @@ if ($selected_id && !$selectedStore) {
                                         <?= htmlspecialchars($row['title']) ?>
                                         <input type="hidden" name="order_detail_ids[]" value="<?= $row['orderdetail_ID'] ?>">
                                     </td>
-                                    <td><?= $row['value'] ?></td>
+                                    <td>￥<?= $row['value'] ?></td>
                                     <td>
                                         <input type="number" name="quantities[]" value="<?= $remain_qty ?>" min="1" max="<?= $remain_qty ?>" style="width:60px;">
                                         <span style="font-size:12px;color:#888;">(残:<?= $remain_qty ?>)</span>
@@ -243,7 +244,7 @@ if ($selected_id && !$selectedStore) {
                             <td class="bold">合計</td>
                              <td></td>
                              <td><input type="number" id="sum_qty" value="<?= $sum_qty ?>" readonly></td>
-                            <td><input type="number" id="sum_total" value="<?= $sum_total ?>" readonly></td>
+                            <td><span id="sum_total">￥<?= htmlspecialchars(number_format($sum_total)) ?></span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -279,11 +280,12 @@ if ($selected_id && !$selectedStore) {
                 // チェックが入っている行だけ計算
                 if (checkbox.checked) {
                     const qty = parseInt(qtyInput.value) || 0;
-                    const value = parseInt(valueCell.textContent) || 0;
+                    const value = parseInt(valueCell.textContent.replace('￥', '').replace(/,/g, '')) || 0;
+                
                     const total = value * qty;
                     sum_qty += qty;
                     sum_total += total;
-                    totalCell.textContent = total;
+                    totalCell.textContent = '￥' + total.toLocaleString(); 
                     qtyInput.disabled = false;
                 } else {
                     totalCell.textContent = 0;
@@ -291,7 +293,7 @@ if ($selected_id && !$selectedStore) {
                 }
             });
             document.getElementById('sum_qty').value = sum_qty;
-            document.getElementById('sum_total').value = sum_total;
+            document.getElementById('sum_total').textContent = '￥' + sum_total.toLocaleString();
         }
 
         // 初期表示時にも計算
