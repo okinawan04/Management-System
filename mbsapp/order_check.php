@@ -28,7 +28,8 @@ $sql = "
         c.chargeName AS charge,
         o.total,
         o.orderday,
-        o.state
+        o.state,
+        o.remark
     FROM orders o
     LEFT JOIN customer c ON o.yk_customerID = c.customer_ID
     WHERE o.orders_ID = :order_id
@@ -126,6 +127,7 @@ foreach ($details as $detail) {
                         <th>数量</th>
                         <th>単価</th>
                         <th>摘要</th>
+                        <th>備考</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -138,6 +140,7 @@ foreach ($details as $detail) {
                             <td><?= htmlspecialchars($d['quantity']) ?></td>
                             <td><?= htmlspecialchars(number_format($d['value'])) ?></td>
                             <td><?= htmlspecialchars($d['description'] ?? '') ?></td>
+                            <td></td> <!-- 備考欄の為に空行追加 -->
                         </tr>
                     <?php endforeach; ?>
 
@@ -152,6 +155,10 @@ foreach ($details as $detail) {
                         </td> 
                         <td>
                             <input type="text" value="<?= number_format($order['total']) ?>" readonly>
+                        </td>
+                        <td></td> <!-- 摘要 -->
+                        <td><!-- 備考の表示 -->
+                            <input type="textarea" value ="<?= htmlspecialchars($order['remark']) ?? '' ?>">
                         </td>
                     </tr>
                 </tbody>
