@@ -140,7 +140,7 @@ if (!empty($selectedStore)) {
                     </tr>
                 </thead>
                 <tbody id="customerTbody">
-                    <?php $no = 1; foreach ($customers as $customer): ?>
+                    <?php $no = 1; foreach ($customers as $customer):  $currencyMark = '￥';?>
                         <tr>
                             <td class="nocol">
                                 <a href="customer_analytics.php?customer_id=<?= htmlspecialchars($customer['customer_ID'], ENT_QUOTES, 'UTF-8'); ?>&selected_store=<?= htmlspecialchars($selectedStore) ?>">
@@ -159,7 +159,7 @@ if (!empty($selectedStore)) {
                             <td>
                                 <?= number_format($customer['avg_lead_time'] ?? 0, 2); ?>
                             </td>
-                            <td><?= number_format($customer['total_amount']); ?></td>
+                            <td><?= $currencyMark . number_format($customer['total_amount']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
