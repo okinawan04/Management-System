@@ -125,13 +125,13 @@ foreach ($details as $d) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($details as $i => $d): ?>
+                    <?php foreach ($details as $i => $d): $currencyMark = '￥'; ?>
                         <tr>
                             <td class="row-number"><?= $i + 1 ?></td>
                             <td><?= htmlspecialchars($d['title'] ?? '') ?></td>
-                            <td><?= htmlspecialchars($d['value'] ?? '') ?></td>
+                            <td><?= $currencyMark . htmlspecialchars($d['value'] ?? '') ?></td>
                             <td><?= htmlspecialchars($d['quantity'] ?? '') ?></td>
-                            <td><?= number_format(($d['quantity'] ?? 0) * ($d['value'] ?? 0)) ?></td>
+                            <td><?= $currencyMark . number_format(($d['quantity'] ?? 0) * ($d['value'] ?? 0)) ?></td>
                         </tr>
                     <?php endforeach; ?>
                     <!-- 合計行 -->
@@ -139,7 +139,7 @@ foreach ($details as $d) {
                         <td></td>
                         <td class="bold" colspan="2">合計</td>
                         <td><?= htmlspecialchars($totalQuantity) ?></td> <!-- 合計数量 -->
-                        <td><input type="text" value="<?= number_format($total) ?>" readonly></td>
+                        <td><input type="text" value="<?= $currencyMark . number_format($total) ?>" readonly></td>
                     </tr>
                 </tbody>
             </table>
