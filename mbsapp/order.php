@@ -142,7 +142,7 @@ $returnToCustomerChoiseFrom = 'order.php';
                 <td class="row-number">${i + 1}</td>
                 <td><input type="text" name="title[]"></td>
                 <td><input type="number" name="quantity[]" min="1"></td>
-                <td><input type="number" name="value[]" min="0" step="1"></td>
+                <td>￥<input type="number" name="value[]" min="0" step="1"></td>
                 <td>
                     <input type="text" name="description[]">
                 </td>
