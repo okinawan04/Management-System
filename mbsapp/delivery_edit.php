@@ -15,6 +15,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_delivery'])) {
             $enabled = isset($_POST['enabled'][$i]) ? 1 : 0;
             $quantity = intval($_POST['quantity'][$i] ?? 0);
 
+            // 注文数量取得
+            $sql = "SELECT yk_orderdetailID FROM deliverydetail WHERE deliverydetail_ID = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([intval($detail_id)]);
+            $orderdetail_id = $stmt->fetchColumn();
+
+            $ordered_qty = 0;
+            if ($orderdetail_id) {
+                $stmt2 = $pdo->prepare("SELECT quantity FROM orderdetail WHERE orderdetail_ID = ?");
+                $stmt2->execute([$orderdetail_id]);
+                $ordered_qty = (int)$stmt2->fetchColumn();
+
+                // 他の納品済み数量取得（自分以外）
+                $stmt3 = $pdo->prepare("SELECT SUM(quantity) FROM deliverydetail WHERE yk_orderdetailID = ? AND deliverydetail_ID != ?");
+                $stmt3->execute([$orderdetail_id, intval($detail_id)]);
+                $other_delivered_qty = (int)$stmt3->fetchColumn();
+
+                $max_qty = max($ordered_qty - $other_delivered_qty, 0);
+                if ($quantity > $max_qty) $quantity = $max_qty; // 超過分は最大値に丸める
+            }
+
             if ($enabled) {
                 // チェックあり：数量のみ更新
                 $sql = "UPDATE deliverydetail SET quantity = ? WHERE deliverydetail_ID = ?";
@@ -163,6 +184,19 @@ $details = $stmt_details->fetchAll();
                         $sum_qty += $qty;
                         $sum_value += $value;
                         $sum_total += $total;
+
+                        // 注文数量取得
+                        $orderdetail_id = $d['orderdetail_ID'];
+                        $stmt_order = $pdo->prepare("SELECT quantity FROM orderdetail WHERE orderdetail_ID = ?");
+                        $stmt_order->execute([$orderdetail_id]);
+                        $ordered_qty = (int)$stmt_order->fetchColumn();
+
+                        // 他の納品済み数量取得（自分以外）
+                        $stmt_delivered = $pdo->prepare("SELECT SUM(quantity) FROM deliverydetail WHERE yk_orderdetailID = ? AND deliverydetail_ID != ?");
+                        $stmt_delivered->execute([$orderdetail_id, $d['deliverydetail_ID']]);
+                        $other_delivered_qty = (int)$stmt_delivered->fetchColumn();
+
+                        $max_qty = max($ordered_qty - $other_delivered_qty, 0);
                     ?>
                     <tr>
                         <td>
@@ -172,7 +206,8 @@ $details = $stmt_details->fetchAll();
                         <td><?= htmlspecialchars($d['title'] ?? '') ?></td>
                         <td><?= $value ?></td>
                         <td>
-                            <input type="number" name="quantity[<?= $i ?>]" value="<?= $qty ?>" min="0" style="width:60px;">
+                            <input type="number" name="quantity[<?= $i ?>]" value="<?= $qty ?>" min="0" max="<?= $max_qty ?>" style="width:60px;">
+                            <span style="font-size:12px;color:#888;">(最大:<?= $max_qty ?>)</span>
                         </td>
                         <td class="row-total"><?= $total ?></td>
                     </tr>
