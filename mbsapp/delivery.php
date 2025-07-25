@@ -9,11 +9,11 @@ $selectedStore = $_POST['selected_store'] ?? $_GET['selected_store'] ?? null;
 $customer_id_from_post = $_POST['customer_id'] ?? null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deliver'])) {
-    $selected_rows = $_POST['selected_rows'] ?? [];
+    // selected_rows[]は不要
     $order_detail_ids = $_POST['order_detail_ids'] ?? [];
     $quantities = $_POST['quantities'] ?? [];
 
-    if (!empty($selected_rows) && $customer_id_from_post) {
+    if (!empty($order_detail_ids) && !empty($quantities) && $customer_id_from_post) {
         $pdo->beginTransaction();
         try {
             // まずorders_IDを取得
@@ -24,8 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deliver'])) {
             if ($order) {
                 // 合計金額計算
                 $total = 0;
-                foreach ($selected_rows as $idx) {
-                    $detailId = $order_detail_ids[$idx];
+                foreach ($order_detail_ids as $idx => $detailId) {
                     $qty = isset($quantities[$idx]) ? intval($quantities[$idx]) : 0;
                     $stmt2 = $pdo->prepare("SELECT value FROM orderdetail WHERE orderdetail_ID = :detail_id");
                     $stmt2->execute([':detail_id' => $detailId]);
@@ -45,8 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deliver'])) {
                 $deliverys_id = $pdo->lastInsertId();
 
                 // deliverydetailに登録
-                foreach ($selected_rows as $idx) {
-                    $detailId = $order_detail_ids[$idx];
+                foreach ($order_detail_ids as $idx => $detailId) {
                     $qty = isset($quantities[$idx]) ? intval($quantities[$idx]) : 0;
                     // deliverydetailへINSERT
                     $stmt = $pdo->prepare("
@@ -111,6 +109,8 @@ if ($selected_id && !$selectedStore) {
         error_log("Failed to get store ID for customer: " . $e->getMessage());
     }
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -295,6 +295,19 @@ if ($selected_id && !$selectedStore) {
 
         // 初期表示時にも計算
         recalcTotals();
+
+        // 送信前に不要なinputをdisabledにする
+        document.getElementById('deliveryForm').addEventListener('submit', function() {
+            document.querySelectorAll('.delivery-table tbody tr').forEach(function(row) {
+                const checkbox = row.querySelector('input[type="checkbox"][name="selected_rows[]"]');
+                const qtyInput = row.querySelector('input[name="quantities[]"]');
+                const idInput = row.querySelector('input[name="order_detail_ids[]"]');
+                if (checkbox && qtyInput && idInput && !checkbox.checked) {
+                    qtyInput.disabled = true;
+                    idInput.disabled = true;
+                }
+            });
+        });
     });
 </script>
 </body>
