@@ -57,9 +57,7 @@ $returnToCustomerChoiseFrom = 'order.php';
 <body>
     <header>
         <div class="logo-container">
-            <div class="logo">
-                緑橋書店
-            </div>
+            <div class="logo" style="cursor:pointer;" onclick="location.href='top.php'">緑橋書店</div>
             <div class="subtitle">注文書作成</div>
         </div>
         <div class="header-buttons">
