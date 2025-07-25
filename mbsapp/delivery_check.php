@@ -109,7 +109,7 @@ foreach ($details as $d) {
             </div>
 
             <div class="recipient">
-                <input type="text" class="recipient-name" value="<?= htmlspecialchars($delivery['customer_name'] ?? '') ?>" readonly>
+                <span class="recipient-name"><?= htmlspecialchars($delivery['customer_name'] ?? '') ?></span>
                 <span>様</span>
             </div>
             <div class="note">下記の通り納品いたしました</div>
