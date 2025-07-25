@@ -182,7 +182,7 @@ th {
 /* 担当者名列 */ 
 .delivery-table th:nth-child(3),
 .delivery-table td:nth-child(3) {
-    width: 400px; 
+    width: 380px; 
 }
 /* 税合計金額列 */
 .delivery-table th:nth-child(4),
@@ -192,7 +192,7 @@ th {
 /* 作成日列 */
 .delivery-table th:nth-child(5),
 .delivery-table td:nth-child(5) {
-    width: 150px; 
+    width: 170px; 
 }
  
 /* テーブル内の入力フォーム共通 */

@@ -240,8 +240,7 @@ if ($selected_id && !$selectedStore) {
                         <!-- 合計行 -->
                         <tr>
                             <td></td>
-                            <td class="bold">合計</td>
-                             <td></td>
+                            <td colspan="2" class="bold">合計</td>
                              <td><input type="number" id="sum_qty" value="<?= $sum_qty ?>" readonly></td>
                             <td><input type="number" id="sum_total" value="<?= $sum_total ?>" readonly></td>
                         </tr>
