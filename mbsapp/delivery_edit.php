@@ -79,6 +79,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_delivery'])) {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$new_total, $delivery_id]);
 
+    // 納品済み数量が注文数量と一致したorderdetailのstateをYESに
+    $sql = "SELECT yk_orderdetailID FROM deliverydetail WHERE yk_deliverysID = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$delivery_id]);
+    $orderdetail_ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+    foreach ($orderdetail_ids as $orderdetail_id) {
+        // 注文数量取得
+        $stmt_order = $pdo->prepare("SELECT quantity FROM orderdetail WHERE orderdetail_ID = ?");
+        $stmt_order->execute([$orderdetail_id]);
+        $ordered_qty = (int)$stmt_order->fetchColumn();
+
+        // 納品済み数量取得
+        $stmt_delivered = $pdo->prepare("SELECT SUM(quantity) FROM deliverydetail WHERE yk_orderdetailID = ?");
+        $stmt_delivered->execute([$orderdetail_id]);
+        $delivered_qty = (int)$stmt_delivered->fetchColumn();
+
+        // 全数納品済みならstateをYESに
+        if ($delivered_qty === $ordered_qty && $ordered_qty > 0) {
+            $stmt_update = $pdo->prepare("UPDATE orderdetail SET state = 'YES' WHERE orderdetail_ID = ?");
+            $stmt_update->execute([$orderdetail_id]);
+        } else {
+            // まだ全数納品でなければNOに戻す（編集で減らした場合も考慮）
+            $stmt_update = $pdo->prepare("UPDATE orderdetail SET state = 'NO' WHERE orderdetail_ID = ?");
+            $stmt_update->execute([$orderdetail_id]);
+        }
+    }
+
     // 完了後リダイレクト
     header("Location: delivery_check.php?no=$delivery_id&selected_store=" . urlencode($selectedStore) . "&success=1");
     exit;
