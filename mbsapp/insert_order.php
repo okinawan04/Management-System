@@ -20,12 +20,15 @@ $sourceListPage = $_POST['source_list_page'] ?? 'order_list.php'; // デフォ�
 
     } 
 
+$remark = $_POST['remarks'] ?? null;
+
 // 注文作成
-$stmt = $pdo->prepare("INSERT INTO orders (state,total,yk_customerID) VALUES ('',:total, :customer_id)");
+$stmt = $pdo->prepare("INSERT INTO orders (state,total,yk_customerID,remark) VALUES ('',:total, :customer_id,:remark)");
 
 $stmt->execute([
     ':total' => $total,
-    ':customer_id' => $customer_id
+    ':customer_id' => $customer_id,
+    ':remark' => $remark
 ]); //sqlの実行
 
 $orderId = $pdo->lastInsertId();
